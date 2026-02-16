@@ -1,0 +1,17 @@
+name: aws_pet_tracking_app
+
+services:
+  aws_pet_tracking_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: aws_pet_tracking_app-web:dev
+    container_name: aws_pet_tracking_app_web
+    ports:
+      - "3100:3100"
+    volumes:
+      - .:/aws_pet_tracking_app
+    env_file:
+      - .env
+    stdin_open: true
+    tty: true
