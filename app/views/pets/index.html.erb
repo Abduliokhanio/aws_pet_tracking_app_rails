@@ -8,9 +8,12 @@
   <% @pets.each do |pet| %>
     <%= render pet %>
     <p>
-      <%= link_to "Show this pet", pet %>
+      <%= link_to "Show this pet", [@user, pet] %>
     </p>
   <% end %>
 </div>
 
-<%= link_to "New pet", new_pet_path %>
+<%= link_to "New pet", new_user_pet_path %>
+
+<%= link_to "Users", users_path %>
+

@@ -5,6 +5,9 @@
 <div>
   <%= link_to "Edit this user", edit_user_path(@user) %> |
   <%= link_to "Back to users", users_path %>
+  <%= link_to "SHOW this users pets", user_pets_path(@user) %>
+
+  <hr>
 
   <%= button_to "Destroy this user", @user, method: :delete %>
 </div>

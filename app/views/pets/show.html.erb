@@ -3,8 +3,10 @@
 <%= render @pet %>
 
 <div>
-  <%= link_to "Edit this pet", edit_pet_path(@pet) %> |
-  <%= link_to "Back to pets", pets_path %>
+  <%= link_to "Edit this pet", edit_user_pet_path(@user, @pet) %> |
+  <%= link_to "Back to pets", user_pets_path %>
 
-  <%= button_to "Destroy this pet", @pet, method: :delete %>
+
+  <hr>
+  <%= button_to "Destroy this pet", [@user,@pet], method: :delete %>
 </div>

@@ -1,5 +1,6 @@
 class PetsController < ApplicationController
   before_action :set_pet, only: %i[ show edit update destroy ]
+  before_action :set_user
 
   # GET /pets or /pets.json
   def index
@@ -25,8 +26,8 @@ class PetsController < ApplicationController
 
     respond_to do |format|
       if @pet.save
-        format.html { redirect_to @pet, notice: "Pet was successfully created." }
-        format.json { render :show, status: :created, location: @pet }
+        format.html { redirect_to user_pet_path(@user, @pet), notice: "Pet was successfully created." }
+        format.json { render :show, status: :created, location: user_pet_url(@user, @pet) }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @pet.errors, status: :unprocessable_entity }
@@ -38,8 +39,8 @@ class PetsController < ApplicationController
   def update
     respond_to do |format|
       if @pet.update(pet_params)
-        format.html { redirect_to @pet, notice: "Pet was successfully updated.", status: :see_other }
-        format.json { render :show, status: :ok, location: @pet }
+        format.html { redirect_to user_pet_path(@user, @pet), notice: "Pet was successfully updated.", status: :see_other }
+        format.json { render :show, status: :ok, location: user_pet_url(@user, @pet) }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @pet.errors, status: :unprocessable_entity }
@@ -52,7 +53,7 @@ class PetsController < ApplicationController
     @pet.destroy!
 
     respond_to do |format|
-      format.html { redirect_to pets_path, notice: "Pet was successfully destroyed.", status: :see_other }
+      format.html { redirect_to user_pets_path, notice: "Pet was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
     end
   end
@@ -67,4 +68,10 @@ class PetsController < ApplicationController
     def pet_params
       params.expect(pet: [ :name, :gender, :species, :user_id ])
     end
+
+    def set_user
+      @user = User.find(params[:user_id])
+    end
 end
+
+
