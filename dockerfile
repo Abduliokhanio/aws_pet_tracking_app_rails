@@ -14,10 +14,10 @@ WORKDIR /aws_pet_tracking_app
 
 # Ruby tooling
 RUN gem install bundler rails
-# COPY Gemfile Gemfile.lock ./
-# RUN bundle install
-# COPY . .
+COPY Gemfile Gemfile.lock ./
+RUN bundle install
+COPY . .
 
 EXPOSE 3100
 
-# CMD ["bin/rails", "s", "-b", "0.0.0.0", "-p", "3100"]
+CMD ["bin/rails", "s", "-b", "0.0.0.0", "-p", "3100"]
