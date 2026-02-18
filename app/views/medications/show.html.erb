@@ -188,14 +188,20 @@
         }
         
         console.log('Chart.js is ready, creating chart');
+        console.log('Start date:', '<%= @medication.start_date.iso8601 %>');
+        console.log('End date:', <%= @medication.end_date ? "'#{@medication.end_date.iso8601}'" : "'today'" %>);
         
         const startDate = new Date('<%= @medication.start_date.iso8601 %>');
         const endDate = <%= @medication.end_date ? "new Date('#{@medication.end_date.iso8601}')" : 'new Date()' %>;
+        
+        console.log('Parsed start date:', startDate);
+        console.log('Parsed end date:', endDate);
         
         // Get dosage history from the backend
         const dosageHistory = <%= raw @medication.medication_dosages.ordered.map { |d| { date: d.recorded_on.iso8601, dose: d.dose.to_f } }.to_json %>;
         
         console.log('Dosage history:', dosageHistory);
+        console.log('Number of dosage records:', dosageHistory.length);
         
         // If no dosage history, use the medication's current dose
         if (dosageHistory.length === 0) {
