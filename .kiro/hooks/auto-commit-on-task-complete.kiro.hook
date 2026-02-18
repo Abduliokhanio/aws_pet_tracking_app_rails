@@ -7,8 +7,7 @@
     "type": "agentStop"
   },
   "then": {
-    "type": "runCommand",
-    "command": "git add -A && git commit -m \"Auto-commit: $(echo \"$KIRO_PROMPT\" | head -c 100)\"",
-    "timeout": 30
+    "type": "askAgent",
+    "prompt": "Stage all changes with 'git add -A' and commit them with a concise message (50 chars max) describing what was just accomplished in this task. Use format: 'feat: <description>' or 'fix: <description>'. Execute the git commands directly."
   }
 }
