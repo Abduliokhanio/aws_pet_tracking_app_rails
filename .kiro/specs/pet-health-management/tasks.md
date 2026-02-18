@@ -406,23 +406,23 @@ This implementation plan breaks down the Pet Health Management System into incre
     - _Requirements: 12.5_
 
 - [ ] 25. Implement data integrity and cascade deletion
-  - [ ] 25.1 Update Pet model with cascade deletions
+  - [x] 25.1 Update Pet model with cascade deletions
     - Add has_many :health_records, dependent: :destroy
     - Add has_many :medications, dependent: :destroy
     - Add has_many :reminders, dependent: :destroy
     - _Requirements: 11.1_
   
-  - [ ] 25.2 Update User model with cascade deletions
+  - [x] 25.2 Update User model with cascade deletions
     - Verify has_many :pets, dependent: :destroy exists
     - _Requirements: 11.2_
   
-  - [ ] 25.3 Write property tests for cascade deletions (Properties 48-50)
+  - [x] 25.3 Write property tests for cascade deletions (Properties 48-50)
     - Test pet deletion cascade
     - Test user deletion cascade
     - Test vet office deletion cascade
     - **Validates: Requirements 11.1, 11.2, 11.3**
   
-  - [ ] 25.4 Write property test for veterinarian deletion restriction (Property 51)
+  - [x] 25.4 Write property test for veterinarian deletion restriction (Property 51)
     - **Property 51: Veterinarian deletion restriction**
     - **Validates: Requirements 11.4**
 
