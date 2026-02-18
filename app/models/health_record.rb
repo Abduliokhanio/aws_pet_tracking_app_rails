@@ -9,4 +9,12 @@ class HealthRecord < ApplicationRecord
   scope :chronological, -> { order(recorded_on: :desc) }
   scope :recent, -> { where('recorded_on >= ?', 30.days.ago) }
   scope :with_weight, -> { where.not(weight: nil) }
+  
+  after_create :check_health_thresholds
+  
+  private
+  
+  def check_health_thresholds
+    HealthAlertService.new(self).check_and_alert
+  end
 end

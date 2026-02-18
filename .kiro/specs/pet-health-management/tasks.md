@@ -182,7 +182,7 @@ This implementation plan breaks down the Pet Health Management System into incre
     - Add complete! instance method
     - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5, 9.6_
   
-  - [ ] 8.2 Write property tests for reminder model (Properties 40-45)
+  - [x] 8.2 Write property tests for reminder model (Properties 40-45)
     - Test reminder required fields, validation, status detection, and grouping
     - **Validates: Requirements 9.1, 9.2, 9.3, 9.4, 9.5, 9.6**
 
@@ -190,7 +190,7 @@ This implementation plan breaks down the Pet Health Management System into incre
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 10. Implement HealthAlertService
-  - [ ] 10.1 Create HealthAlertService class
+  - [x] 10.1 Create HealthAlertService class
     - Add initialize method accepting health_record
     - Add check_and_alert public method
     - Add private methods: check_weight_threshold, check_activity_level, check_declining_trends
@@ -200,11 +200,11 @@ This implementation plan breaks down the Pet Health Management System into incre
     - Include error handling with logging
     - _Requirements: 2.1, 2.2, 2.5_
   
-  - [ ] 10.2 Add after_create callback to HealthRecord
+  - [x] 10.2 Add after_create callback to HealthRecord
     - Call HealthAlertService.new(self).check_and_alert
     - _Requirements: 2.1, 2.2, 2.5_
   
-  - [ ] 10.3 Write property tests for health alert service (Properties 7-9)
+  - [-] 10.3 Write property tests for health alert service (Properties 7-9)
     - Test low weight alert generation
     - Test low activity alert generation
     - Test declining trend detection
