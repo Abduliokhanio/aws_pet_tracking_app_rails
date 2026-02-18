@@ -72,7 +72,7 @@ This implementation plan breaks down the Pet Health Management System into incre
     - Add scopes: chronological, recent, with_weight
     - _Requirements: 1.2, 1.3, 1.6, 3.5_
   
-  - [ ]* 4.2 Write property test for weight precision (Property 1)
+  - [x] 4.2 Write property test for weight precision (Property 1)
     - **Property 1: Weight precision preservation**
     - **Validates: Requirements 1.1**
   
