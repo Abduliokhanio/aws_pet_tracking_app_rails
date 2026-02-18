@@ -13,23 +13,23 @@ This implementation plan breaks down the Pet Health Management System into incre
   - Create base test generators for common data types (dates, weights, names)
   - _Requirements: All (testing foundation)_
 
-- [ ] 2. Create database migrations for health tracking
-  - [ ] 2.1 Create health_records migration
+- [x] 2. Create database migrations for health tracking
+  - [x] 2.1 Create health_records migration
     - Add table with pet_id, medication_id, weight (decimal 5,2), recorded_on (not null), mood, activity_level, food_intake, medication_name, medication_dose, status, notes, timestamps
     - Add foreign key constraints and indexes
     - _Requirements: 1.1, 1.2, 1.3, 1.6_
   
-  - [ ] 2.2 Create medications migration
+  - [x] 2.2 Create medications migration
     - Add table with pet_id, medication_name (not null), dose (not null), start_date (not null), end_date, notes, timestamps
     - Add foreign key constraints and indexes
     - _Requirements: 3.1, 3.4_
   
-  - [ ] 2.3 Create reminders migration
+  - [x] 2.3 Create reminders migration
     - Add table with pet_id, reminder_type (not null), scheduled_date (not null), title (not null), description, completed_at, status (default: 'pending'), alert_context (text), timestamps
     - Add foreign key constraints and indexes
     - _Requirements: 9.1, 9.6_
   
-  - [ ] 2.4 Run migrations and verify schema
+  - [x] 2.4 Run migrations and verify schema
     - Execute rails db:migrate
     - Verify schema.rb reflects all new tables and constraints
     - _Requirements: 11.5_
