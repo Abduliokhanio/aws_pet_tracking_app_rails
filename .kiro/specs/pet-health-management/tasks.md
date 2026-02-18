@@ -227,12 +227,12 @@ This implementation plan breaks down the Pet Health Management System into incre
     - **Validates: Requirements 12.1, 12.2, 12.3, 12.5**
 
 - [ ] 12. Implement ReminderService
-  - [ ] 12.1 Create ReminderService class
+  - [x] 12.1 Create ReminderService class
     - Add class method: create_from_health_alert(pet, alert_context)
     - Add class method: mark_due_reminders
     - _Requirements: 10.1, 10.2, 9.2_
   
-  - [ ] 12.2 Write property tests for reminder service (Property 46)
+  - [x] 12.2 Write property tests for reminder service (Property 46)
     - Test alert context transfer to reminders
     - **Validates: Requirements 10.2**
 
