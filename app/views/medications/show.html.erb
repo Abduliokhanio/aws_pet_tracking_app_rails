@@ -123,7 +123,110 @@
     </div>
   </div>
 
-  <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+  <script>
+    // Use DOMContentLoaded instead of turbo:load for more reliable execution
+    (function() {
+      function initChart() {
+        console.log('Init chart function called');
+        console.log('Chart available:', typeof Chart);
+        
+        const canvas = document.getElementById('medicationUsageChart');
+        if (!canvas) {
+          console.log('Canvas not found');
+          return;
+        }
+        
+        console.log('Canvas found');
+        
+        // Wait for Chart.js to be available
+        if (typeof Chart === 'undefined') {
+          console.log('Chart not ready, waiting...');
+          setTimeout(initChart, 100);
+          return;
+        }
+        
+        console.log('Chart.js is ready, creating chart');
+        
+        const startDate = new Date('<%= @medication.start_date.iso8601 %>');
+        const endDate = <%= @medication.end_date ? "new Date('#{@medication.end_date.iso8601}')" : 'new Date()' %>;
+        const today = new Date();
+        
+        // Generate daily data points
+        const labels = [];
+        const data = [];
+        let currentDate = new Date(startDate);
+        
+        while (currentDate <= endDate && currentDate <= today) {
+          labels.push(currentDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+          data.push(1);
+          currentDate.setDate(currentDate.getDate() + 1);
+        }
+        
+        console.log('Data points:', labels.length);
+        
+        const ctx = canvas.getContext('2d');
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Medication Active',
+              data: data,
+              borderColor: '#00d4ff',
+              backgroundColor: 'rgba(0, 212, 255, 0.2)',
+              fill: true,
+              stepped: true,
+              pointRadius: 0,
+              borderWidth: 3
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              title: {
+                display: true,
+                text: 'Medication Usage Timeline',
+                color: '#00d4ff',
+                font: { size: 16 }
+              }
+            },
+            scales: {
+              y: {
+                display: false,
+                min: 0,
+                max: 1.5
+              },
+              x: {
+                ticks: {
+                  color: '#e0e0e0',
+                  maxRotation: 45,
+                  minRotation: 45,
+                  maxTicksLimit: 10
+                },
+                grid: {
+                  color: 'rgba(0, 212, 255, 0.1)'
+                }
+              }
+            }
+          }
+        });
+        
+        console.log('Chart created!');
+      }
+      
+      // Try multiple event listeners
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initChart);
+      } else {
+        initChart();
+      }
+      
+      document.addEventListener('turbo:load', initChart);
+      document.addEventListener('turbo:render', initChart);
+    })();
+  </script>
     <%= link_to edit_pet_medication_path(@pet, @medication), style: "color: #00d4ff; text-decoration: none; padding: 1rem 2rem; border: 2px solid #00d4ff; border-radius: 25px; background: rgba(0, 212, 255, 0.1); font-weight: 600; transition: all 0.3s ease; cursor: pointer;", onmouseover: "this.style.background='#00d4ff'; this.style.color='#0a0e27';", onmouseout: "this.style.background='rgba(0, 212, 255, 0.1)'; this.style.color='#00d4ff';" do %>
       ✏️ Edit
     <% end %>
