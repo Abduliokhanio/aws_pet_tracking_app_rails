@@ -209,20 +209,32 @@
         const labels = [];
         const data = [];
         let currentDate = new Date(startDate);
-        let currentDosageIndex = 0;
+        let dosageIndex = 0;
+        
+        // Find the initial dosage (the one at or before start date)
         let currentDose = dosageHistory[0].dose;
+        for (let i = 0; i < dosageHistory.length; i++) {
+          const dosageDate = new Date(dosageHistory[i].date);
+          if (dosageDate <= startDate) {
+            currentDose = dosageHistory[i].dose;
+            dosageIndex = i + 1;
+          } else {
+            break;
+          }
+        }
+        
+        console.log('Starting dose:', currentDose, 'at index:', dosageIndex);
         
         while (currentDate <= endDate) {
           const dateStr = currentDate.toISOString().split('T')[0];
           
           // Check if there's a dosage change on this date
-          for (let i = currentDosageIndex; i < dosageHistory.length; i++) {
-            if (dosageHistory[i].date === dateStr) {
-              currentDose = dosageHistory[i].dose;
-              currentDosageIndex = i + 1;
-              break;
-            } else if (new Date(dosageHistory[i].date) > currentDate) {
-              break;
+          if (dosageIndex < dosageHistory.length) {
+            const nextDosageDate = dosageHistory[dosageIndex].date;
+            if (nextDosageDate === dateStr) {
+              currentDose = dosageHistory[dosageIndex].dose;
+              console.log('Dosage changed to', currentDose, 'on', dateStr);
+              dosageIndex++;
             }
           }
           
