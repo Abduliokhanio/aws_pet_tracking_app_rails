@@ -211,6 +211,7 @@ div[style*="color: red"] li {
   background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
   opacity: 0;
   transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
 .card:hover {
