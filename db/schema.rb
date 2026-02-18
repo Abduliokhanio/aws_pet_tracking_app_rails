@@ -10,7 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_18_184158) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_18_184520) do
+  create_table "addresses", force: :cascade do |t|
+    t.string "city", null: false
+    t.string "country", null: false
+    t.datetime "created_at", null: false
+    t.string "state", null: false
+    t.datetime "updated_at", null: false
+    t.integer "vet_office_id", null: false
+    t.string "zipcode", null: false
+    t.index ["vet_office_id"], name: "index_addresses_on_vet_office_id"
+  end
+
+  create_table "contacts", force: :cascade do |t|
+    t.string "contact_type", null: false
+    t.string "contact_value", null: false
+    t.datetime "created_at", null: false
+    t.boolean "is_primary", default: false
+    t.datetime "updated_at", null: false
+    t.integer "vet_office_id", null: false
+    t.index ["vet_office_id", "contact_type", "is_primary"], name: "idx_on_vet_office_id_contact_type_is_primary_eec3e1dd41"
+    t.index ["vet_office_id"], name: "index_contacts_on_vet_office_id"
+  end
+
   create_table "health_records", force: :cascade do |t|
     t.string "activity_level"
     t.datetime "created_at", null: false
@@ -54,6 +76,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_18_184158) do
     t.index ["user_id"], name: "index_pets_on_user_id"
   end
 
+  create_table "ratings", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "rating_value", null: false
+    t.text "review_text"
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.integer "veterinarian_id", null: false
+    t.index ["user_id", "veterinarian_id"], name: "index_ratings_on_user_id_and_veterinarian_id", unique: true
+    t.index ["user_id"], name: "index_ratings_on_user_id"
+    t.index ["veterinarian_id"], name: "index_ratings_on_veterinarian_id"
+  end
+
   create_table "reminders", force: :cascade do |t|
     t.text "alert_context"
     t.datetime "completed_at"
@@ -78,9 +112,30 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_18_184158) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "vet_offices", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "veterinarians", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.integer "vet_office_id", null: false
+    t.text "work_history"
+    t.integer "years_of_experience"
+    t.index ["vet_office_id"], name: "index_veterinarians_on_vet_office_id"
+  end
+
+  add_foreign_key "addresses", "vet_offices"
+  add_foreign_key "contacts", "vet_offices"
   add_foreign_key "health_records", "medications"
   add_foreign_key "health_records", "pets"
   add_foreign_key "medications", "pets"
   add_foreign_key "pets", "users"
+  add_foreign_key "ratings", "users"
+  add_foreign_key "ratings", "veterinarians"
   add_foreign_key "reminders", "pets"
+  add_foreign_key "veterinarians", "vet_offices"
 end
