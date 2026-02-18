@@ -58,5 +58,5 @@
 
 <div class="floating-action">
   <%= link_to "➕ New Reminder", new_pet_reminder_path(@pet), class: "btn-floating" %>
-  <%= link_to "🐾 Back to Pet", pet_path(@pet), class: "btn-floating-secondary" %>
+  <%= link_to "🐾 Back to Pet", user_pet_path(@user, @pet), class: "btn-floating-secondary" %>
 </div>

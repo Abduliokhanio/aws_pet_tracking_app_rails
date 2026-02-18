@@ -4,7 +4,7 @@ class HealthRecordsController < ApplicationController
 
   # GET /pets/:pet_id/health_records
   def index
-    @health_records = @pet.health_records.chronological.page(params[:page])
+    @health_records = @pet.health_records.chronological
     visualization_service = VisualizationService.new(@pet)
     @visualization_data = visualization_service.weight_chart_data
     @health_metrics_data = visualization_service.health_metrics_data
@@ -83,6 +83,7 @@ class HealthRecordsController < ApplicationController
 
   def set_pet
     @pet = Pet.find(params[:pet_id])
+    @user = @pet.user
   end
 
   def set_health_record

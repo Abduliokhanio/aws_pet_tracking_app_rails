@@ -77,6 +77,7 @@ class MedicationsController < ApplicationController
 
   def set_pet
     @pet = Pet.find(params[:pet_id])
+    @user = @pet.user
   end
 
   def set_medication

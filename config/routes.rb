@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   resources :users do
-    resources :pets
+    resources :pets do
+      member do
+        get :dashboard
+      end
+    end
   end
 
   resources :pets, only: [] do

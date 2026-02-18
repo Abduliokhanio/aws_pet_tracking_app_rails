@@ -1,5 +1,5 @@
 class PetsController < ApplicationController
-  before_action :set_pet, only: %i[ show edit update destroy ]
+  before_action :set_pet, only: %i[ show edit update destroy dashboard ]
   before_action :set_user
 
   # GET /pets or /pets.json
@@ -9,6 +9,14 @@ class PetsController < ApplicationController
 
   # GET /pets/1 or /pets/1.json
   def show
+  end
+
+  # GET /pets/1/dashboard
+  def dashboard
+    @recent_health_records = @pet.health_records.chronological.limit(5)
+    @upcoming_reminders = @pet.reminders.upcoming.limit(5)
+    @active_medications = @pet.medications.active
+    @visualization_data = VisualizationService.new(@pet, start_date: 30.days.ago).weight_chart_data
   end
 
   # GET /pets/new
