@@ -211,7 +211,7 @@ This implementation plan breaks down the Pet Health Management System into incre
     - **Validates: Requirements 2.1, 2.2, 2.5**
 
 - [ ] 11. Implement VisualizationService
-  - [ ] 11.1 Create VisualizationService class
+  - [x] 11.1 Create VisualizationService class
     - Add initialize method accepting pet, start_date, end_date
     - Add weight_chart_data method returning chart.js compatible data
     - Add medication_timeline_data method returning timeline data
@@ -219,7 +219,7 @@ This implementation plan breaks down the Pet Health Management System into incre
     - Add private method: aggregate_by_category
     - _Requirements: 12.1, 12.2, 12.3, 12.5_
   
-  - [ ] 11.2 Write property tests for visualization service (Properties 54-57)
+  - [x] 11.2 Write property tests for visualization service (Properties 54-57)
     - Test weight chart data structure
     - Test medication timeline data structure
     - Test date filtering
