@@ -226,7 +226,7 @@
             }
           }
           
-          labels.push(currentDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+          labels.push(currentDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }));
           data.push(currentDose);
           currentDate.setDate(currentDate.getDate() + 1);
         }
