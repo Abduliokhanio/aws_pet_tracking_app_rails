@@ -67,129 +67,128 @@
   <%= link_to "📥 Export to CSV", export_pet_medications_path(@pet, format: :csv), class: "btn-secondary" %>
 </div>
 
-<% if @medications.any? %>
-  <div class="card">
-    <h2>Medication Overview</h2>
-    <div style="position: relative; height: 300px;">
-      <canvas id="medicationTimelineChart"></canvas>
-    </div>
-  </div>
+<style>
+  .medication-list {
+    display: grid;
+    gap: 1rem;
+    margin: 2rem 0;
+  }
   
-  <script>
-    document.addEventListener('turbo:load', () => {
-      const canvas = document.getElementById('medicationTimelineChart');
-      if (!canvas) return;
-      
-      const timelineData = <%= raw @timeline_data.to_json %>;
-      if (!timelineData || timelineData.length === 0) return;
-      
-      const ctx = canvas.getContext('2d');
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: timelineData.map(med => med.name),
-          datasets: [{
-            label: 'Days on Medication',
-            data: timelineData.map(med => {
-              const start = new Date(med.start);
-              const end = new Date(med.end);
-              return Math.ceil((end - start) / (1000 * 60 * 60 * 24));
-            }),
-            backgroundColor: timelineData.map(med => 
-              med.active ? 'rgba(0, 212, 255, 0.6)' : 'rgba(128, 128, 128, 0.4)'
-            ),
-            borderColor: '#00d4ff',
-            borderWidth: 2
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              display: false
-            },
-            title: {
-              display: true,
-              text: 'Medication Duration',
-              color: '#00d4ff',
-              font: { size: 16 }
-            },
-            tooltip: {
-              backgroundColor: 'rgba(0, 0, 0, 0.8)',
-              titleColor: '#00d4ff',
-              bodyColor: '#e0e0e0',
-              borderColor: '#00d4ff',
-              borderWidth: 1,
-              callbacks: {
-                label: function(context) {
-                  const med = timelineData[context.dataIndex];
-                  return [
-                    `Dose: ${med.dose}`,
-                    `Start: ${med.start}`,
-                    `End: ${med.end}`,
-                    `Status: ${med.active ? 'Active' : 'Inactive'}`
-                  ];
-                }
-              }
-            }
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              title: {
-                display: true,
-                text: 'Days',
-                color: '#00d4ff'
-              },
-              ticks: { color: '#e0e0e0' },
-              grid: { color: 'rgba(0, 212, 255, 0.1)' }
-            },
-            x: {
-              ticks: { 
-                color: '#e0e0e0',
-                maxRotation: 45,
-                minRotation: 45
-              },
-              grid: { color: 'rgba(0, 212, 255, 0.1)' }
-            }
-          }
-        }
-      });
-    });
-  </script>
-<% end %>
+  .medication-item {
+    background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8));
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    border-radius: 15px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .medication-item:hover {
+    border-color: #00d4ff;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    transform: translateY(-2px);
+  }
+  
+  .medication-item.inactive {
+    opacity: 0.6;
+    border-color: rgba(128, 128, 128, 0.3);
+  }
+  
+  .medication-info {
+    flex: 1;
+  }
+  
+  .medication-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #00d4ff;
+    margin-bottom: 0.5rem;
+  }
+  
+  .medication-details {
+    color: rgba(224, 224, 224, 0.8);
+    font-size: 0.95rem;
+  }
+  
+  .medication-status {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-left: 1rem;
+  }
+  
+  .status-active {
+    background: rgba(0, 255, 136, 0.2);
+    color: #00ff88;
+    border: 1px solid #00ff88;
+  }
+  
+  .status-inactive {
+    background: rgba(128, 128, 128, 0.2);
+    color: #999;
+    border: 1px solid #666;
+  }
+</style>
 
-<h2>Active Medications</h2>
-<div id="active_medications">
-  <% @active_medications.each do |medication| %>
-    <div class="card">
-      <%= render medication %>
-      <div class="card-actions">
-        <%= link_to "View Details", pet_medication_path(@pet, medication), class: "btn-card" %>
-      </div>
+<h2 style="color: #00d4ff; margin: 2rem 0 1rem 0;">Active Medications</h2>
+<div class="medication-list">
+  <% if @active_medications.any? %>
+    <% @active_medications.each do |medication| %>
+      <%= link_to pet_medication_path(@pet, medication), style: "text-decoration: none;" do %>
+        <div class="medication-item">
+          <div class="medication-info">
+            <div class="medication-name">
+              💊 <%= medication.medication_name %>
+              <span class="medication-status status-active">Active</span>
+            </div>
+            <div class="medication-details">
+              <strong>Dose:</strong> <%= medication.dose %><br>
+              <strong>Started:</strong> <%= medication.start_date.strftime("%b %d, %Y") %>
+              <% if medication.end_date %>
+                | <strong>Ends:</strong> <%= medication.end_date.strftime("%b %d, %Y") %>
+              <% end %>
+            </div>
+          </div>
+          <div style="color: #00d4ff; font-size: 1.5rem;">→</div>
+        </div>
+      <% end %>
+    <% end %>
+  <% else %>
+    <div class="empty-state">
+      <p>💊 No active medications.</p>
     </div>
   <% end %>
 </div>
 
-<div class="empty-state" style="<%= 'display: none;' if @active_medications.any? %>">
-  <p>💊 No active medications.</p>
-</div>
-
-<h2>Inactive Medications</h2>
-<div id="inactive_medications">
-  <% @inactive_medications.each do |medication| %>
-    <div class="card" style="opacity: 0.7;">
-      <%= render medication %>
-      <div class="card-actions">
-        <%= link_to "View Details", pet_medication_path(@pet, medication), class: "btn-card" %>
-      </div>
+<h2 style="color: #00d4ff; margin: 2rem 0 1rem 0;">Inactive Medications</h2>
+<div class="medication-list">
+  <% if @inactive_medications.any? %>
+    <% @inactive_medications.each do |medication| %>
+      <%= link_to pet_medication_path(@pet, medication), style: "text-decoration: none;" do %>
+        <div class="medication-item inactive">
+          <div class="medication-info">
+            <div class="medication-name">
+              💊 <%= medication.medication_name %>
+              <span class="medication-status status-inactive">Inactive</span>
+            </div>
+            <div class="medication-details">
+              <strong>Dose:</strong> <%= medication.dose %><br>
+              <strong>Period:</strong> <%= medication.start_date.strftime("%b %d, %Y") %> - <%= medication.end_date&.strftime("%b %d, %Y") || "Ongoing" %>
+            </div>
+          </div>
+          <div style="color: rgba(224, 224, 224, 0.5); font-size: 1.5rem;">→</div>
+        </div>
+      <% end %>
+    <% end %>
+  <% else %>
+    <div class="empty-state">
+      <p>📋 No inactive medications.</p>
     </div>
   <% end %>
-</div>
-
-<div class="empty-state" style="<%= 'display: none;' if @inactive_medications.any? %>">
-  <p>📋 No inactive medications.</p>
 </div>
 
 <div class="floating-action">
