@@ -128,32 +128,40 @@
     <% if @medication.medication_dosages.any? %>
       <div style="display: grid; gap: 1rem;">
         <% @medication.medication_dosages.ordered.each do |dosage| %>
-          <div style="padding: 1rem; background: rgba(0, 0, 0, 0.3); border-radius: 10px; border-left: 4px solid #00d4ff;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <div>
-                <div style="color: #00d4ff; font-weight: 600; font-size: 1.1rem;">
+          <div style="padding: 1.5rem; background: rgba(0, 0, 0, 0.3); border-radius: 10px; border-left: 4px solid #00d4ff; display: flex; justify-content: space-between; align-items: center;">
+            <div style="flex: 1;">
+              <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                <div style="color: #00d4ff; font-weight: 600; font-size: 1.3rem;">
                   <%= dosage.dose %> mg
                 </div>
-                <div style="color: rgba(224, 224, 224, 0.7); font-size: 0.9rem;">
-                  <%= dosage.recorded_on.strftime("%B %d, %Y") %>
+                <div style="color: rgba(224, 224, 224, 0.7); font-size: 0.95rem;">
+                  📅 <%= dosage.recorded_on.strftime("%B %d, %Y") %>
                 </div>
-                <% if dosage.notes.present? %>
-                  <div style="color: rgba(224, 224, 224, 0.8); margin-top: 0.5rem;">
-                    <%= dosage.notes %>
-                  </div>
-                <% end %>
               </div>
-              <%= button_to "🗑️", pet_medication_medication_dosage_path(@pet, @medication, dosage), method: :delete, style: "background: rgba(255, 77, 109, 0.2); border: 1px solid #ff4d6d; color: #ff4d6d; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-size: 1.2rem;", form: { data: { turbo_confirm: "Delete this dosage record?" } } %>
+              <% if dosage.notes.present? %>
+                <div style="color: rgba(224, 224, 224, 0.8); margin-top: 0.5rem; font-size: 0.95rem;">
+                  💬 <%= dosage.notes %>
+                </div>
+              <% end %>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <%= link_to "✏️", edit_pet_medication_medication_dosage_path(@pet, @medication, dosage), style: "background: rgba(0, 212, 255, 0.2); border: 1px solid #00d4ff; color: #00d4ff; padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none; font-size: 1.2rem; transition: all 0.3s ease;", onmouseover: "this.style.background='rgba(0, 212, 255, 0.4)';", onmouseout: "this.style.background='rgba(0, 212, 255, 0.2)';" %>
+              <%= button_to "🗑️", pet_medication_medication_dosage_path(@pet, @medication, dosage), method: :delete, style: "background: rgba(255, 77, 109, 0.2); border: 1px solid #ff4d6d; color: #ff4d6d; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-size: 1.2rem; transition: all 0.3s ease;", onmouseover: "this.style.background='rgba(255, 77, 109, 0.4)';", onmouseout: "this.style.background='rgba(255, 77, 109, 0.2)';", form: { data: { turbo_confirm: "Delete this dosage record?" } } %>
             </div>
           </div>
         <% end %>
       </div>
     <% else %>
-      <p style="text-align: center; color: rgba(224, 224, 224, 0.5);">No dosage history recorded yet.</p>
+      <div style="text-align: center; padding: 2rem; background: rgba(0, 0, 0, 0.2); border-radius: 10px; border: 2px dashed rgba(0, 212, 255, 0.3);">
+        <p style="color: rgba(224, 224, 224, 0.5); font-size: 1.1rem;">📋 No dosage history recorded yet.</p>
+        <p style="color: rgba(224, 224, 224, 0.4); font-size: 0.9rem; margin-top: 0.5rem;">Add your first dosage record below</p>
+      </div>
     <% end %>
     
-    <div style="margin-top: 1.5rem;">
-      <%= link_to "➕ Add Dosage Change", new_pet_medication_medication_dosage_path(@pet, @medication), style: "display: inline-block; color: #00d4ff; text-decoration: none; padding: 0.8rem 1.5rem; border: 2px solid #00d4ff; border-radius: 15px; background: rgba(0, 212, 255, 0.1); font-weight: 600; transition: all 0.3s ease;", onmouseover: "this.style.background='#00d4ff'; this.style.color='#0a0e27';", onmouseout: "this.style.background='rgba(0, 212, 255, 0.1)'; this.style.color='#00d4ff';" %>
+    <div style="margin-top: 1.5rem; text-align: center;">
+      <%= link_to new_pet_medication_medication_dosage_path(@pet, @medication), style: "display: inline-block; color: #00d4ff; text-decoration: none; padding: 1rem 2rem; border: 2px solid #00d4ff; border-radius: 15px; background: rgba(0, 212, 255, 0.1); font-weight: 600; transition: all 0.3s ease;", onmouseover: "this.style.background='#00d4ff'; this.style.color='#0a0e27';", onmouseout: "this.style.background='rgba(0, 212, 255, 0.1)'; this.style.color='#00d4ff';" do %>
+        ➕ Add Dosage Change
+      <% end %>
     </div>
   </div>
 

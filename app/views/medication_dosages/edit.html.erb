@@ -1,0 +1,142 @@
+<% content_for :title, "Edit Dosage Record" %>
+
+<style>
+  .form-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+  }
+  
+  .form-card {
+    background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8));
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    border-radius: 15px;
+    padding: 2rem;
+  }
+  
+  .form-title {
+    color: #00d4ff;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group label {
+    display: block;
+    color: #00d4ff;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 0.8rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    border-radius: 8px;
+    color: #e0e0e0;
+    font-size: 1rem;
+  }
+  
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: #00d4ff;
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+  }
+  
+  .form-group small {
+    display: block;
+    color: rgba(224, 224, 224, 0.6);
+    margin-top: 0.3rem;
+    font-size: 0.85rem;
+  }
+  
+  .form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  
+  .btn-submit {
+    background: linear-gradient(135deg, #7b2cbf, #5a189a);
+    border: 2px solid #9d4edd;
+    color: #e0e0e0;
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-submit:hover {
+    background: linear-gradient(135deg, #9d4edd, #7b2cbf);
+    box-shadow: 0 0 20px rgba(157, 78, 221, 0.4);
+  }
+  
+  .btn-cancel {
+    background: rgba(0, 212, 255, 0.1);
+    border: 2px solid #00d4ff;
+    color: #00d4ff;
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-cancel:hover {
+    background: #00d4ff;
+    color: #0a0e27;
+  }
+</style>
+
+<div class="form-container">
+  <div class="form-card">
+    <h1 class="form-title">✏️ Edit Dosage Record</h1>
+    <p style="text-align: center; color: rgba(224, 224, 224, 0.7); margin-bottom: 2rem;">
+      <%= @medication.medication_name %> for <%= @pet.name %>
+    </p>
+
+    <%= form_with(model: [@pet, @medication, @medication_dosage], url: pet_medication_medication_dosage_path(@pet, @medication, @medication_dosage), method: :patch) do |form| %>
+      <% if @medication_dosage.errors.any? %>
+        <div style="color: #ff4d6d; background: rgba(255, 77, 109, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+          <h3><%= pluralize(@medication_dosage.errors.count, "error") %> prohibited this record from being saved:</h3>
+          <ul style="margin-top: 0.5rem;">
+            <% @medication_dosage.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= form.label :dose, "Dosage (mg)" %>
+        <%= form.number_field :dose, required: true, step: 0.01, min: 0, placeholder: "e.g., 150.5" %>
+        <small>Enter the dosage amount in milligrams</small>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :recorded_on, "Date of Change" %>
+        <%= form.date_field :recorded_on, required: true %>
+        <small>When did this dosage change take effect?</small>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :notes, "Notes (optional)" %>
+        <%= form.text_area :notes, rows: 3, placeholder: "Reason for dosage change, vet instructions, etc." %>
+      </div>
+
+      <div class="form-actions">
+        <%= form.submit "Update Dosage Record", class: "btn-submit" %>
+        <%= link_to "Cancel", pet_medication_path(@pet, @medication), class: "btn-cancel" %>
+      </div>
+    <% end %>
+  </div>
+</div>
