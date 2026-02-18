@@ -149,15 +149,14 @@
         
         const startDate = new Date('<%= @medication.start_date.iso8601 %>');
         const endDate = <%= @medication.end_date ? "new Date('#{@medication.end_date.iso8601}')" : 'new Date()' %>;
-        const today = new Date();
         const dosage = <%= @medication.dose %>;
         
-        // Generate daily data points
+        // Generate daily data points from start_date to end_date (or today if ongoing)
         const labels = [];
         const data = [];
         let currentDate = new Date(startDate);
         
-        while (currentDate <= endDate && currentDate <= today) {
+        while (currentDate <= endDate) {
           labels.push(currentDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
           data.push(dosage); // Show the dosage amount
           currentDate.setDate(currentDate.getDate() + 1);
