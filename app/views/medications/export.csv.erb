@@ -1,0 +1,14 @@
+<%- headers = ['Medication Name', 'Dose', 'Start Date', 'End Date', 'Duration (days)', 'Status', 'Notes'] -%>
+<%= CSV.generate_line(headers) -%>
+<%- @medications.each do |medication| -%>
+<%- duration = medication.end_date ? (medication.end_date - medication.start_date).to_i : (Date.today - medication.start_date).to_i -%>
+<%= CSV.generate_line([
+  medication.medication_name,
+  medication.dose,
+  medication.start_date,
+  medication.end_date,
+  duration,
+  medication.active? ? 'Active' : 'Inactive',
+  medication.notes
+]) -%>
+<%- end -%>

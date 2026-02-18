@@ -4,8 +4,16 @@ Rails.application.routes.draw do
   end
 
   resources :pets, only: [] do
-    resources :health_records
-    resources :medications
+    resources :health_records do
+      collection do
+        get :export
+      end
+    end
+    resources :medications do
+      collection do
+        get :export
+      end
+    end
     resources :reminders do
       member do
         post :complete

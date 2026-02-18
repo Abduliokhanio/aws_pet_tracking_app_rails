@@ -5,6 +5,9 @@
 <div class="page-header">
   <h1>💊 Medications</h1>
   <p class="page-subtitle">Medication tracking for <%= @pet.name %></p>
+  <div style="margin-top: 10px;">
+    <%= link_to "📥 Export to CSV", export_pet_medications_path(@pet, format: :csv), class: "btn-secondary" %>
+  </div>
 </div>
 
 <% if @medications.any? %>

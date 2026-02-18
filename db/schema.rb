@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_18_184520) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_18_212948) do
   create_table "addresses", force: :cascade do |t|
     t.string "city", null: false
     t.string "country", null: false
@@ -31,6 +31,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_18_184520) do
     t.integer "vet_office_id", null: false
     t.index ["vet_office_id", "contact_type", "is_primary"], name: "idx_on_vet_office_id_contact_type_is_primary_eec3e1dd41"
     t.index ["vet_office_id"], name: "index_contacts_on_vet_office_id"
+  end
+
+  create_table "dismissed_alerts", force: :cascade do |t|
+    t.string "alert_condition", null: false
+    t.string "alert_type", null: false
+    t.datetime "created_at", null: false
+    t.datetime "dismissed_at", null: false
+    t.integer "pet_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pet_id", "alert_type", "alert_condition"], name: "index_dismissed_alerts_on_pet_type_condition"
+    t.index ["pet_id"], name: "index_dismissed_alerts_on_pet_id"
   end
 
   create_table "health_records", force: :cascade do |t|
@@ -64,6 +75,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_18_184520) do
     t.datetime "updated_at", null: false
     t.index ["pet_id", "start_date"], name: "index_medications_on_pet_id_and_start_date"
     t.index ["pet_id"], name: "index_medications_on_pet_id"
+  end
+
+  create_table "pet_health_thresholds", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "pet_id", null: false
+    t.string "threshold_type", null: false
+    t.decimal "threshold_value", precision: 10, scale: 2, null: false
+    t.datetime "updated_at", null: false
+    t.index ["pet_id", "threshold_type"], name: "index_pet_health_thresholds_on_pet_id_and_threshold_type", unique: true
+    t.index ["pet_id"], name: "index_pet_health_thresholds_on_pet_id"
   end
 
   create_table "pets", force: :cascade do |t|
@@ -130,9 +151,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_18_184520) do
 
   add_foreign_key "addresses", "vet_offices"
   add_foreign_key "contacts", "vet_offices"
+  add_foreign_key "dismissed_alerts", "pets"
   add_foreign_key "health_records", "medications"
   add_foreign_key "health_records", "pets"
   add_foreign_key "medications", "pets"
+  add_foreign_key "pet_health_thresholds", "pets"
   add_foreign_key "pets", "users"
   add_foreign_key "ratings", "users"
   add_foreign_key "ratings", "veterinarians"

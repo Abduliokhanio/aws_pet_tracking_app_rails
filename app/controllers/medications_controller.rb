@@ -61,6 +61,18 @@ class MedicationsController < ApplicationController
     end
   end
 
+  # GET /pets/:pet_id/medications/export
+  def export
+    @medications = @pet.medications.order(start_date: :desc)
+
+    respond_to do |format|
+      format.csv do
+        headers['Content-Disposition'] = "attachment; filename=\"#{@pet.name}_medications_#{Date.today}.csv\""
+        headers['Content-Type'] = 'text/csv'
+      end
+    end
+  end
+
   private
 
   def set_pet

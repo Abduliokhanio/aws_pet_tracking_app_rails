@@ -62,6 +62,23 @@ class HealthRecordsController < ApplicationController
     end
   end
 
+  # GET /pets/:pet_id/health_records/export
+  def export
+    start_date = params[:start_date].present? ? Date.parse(params[:start_date]) : 6.months.ago
+    end_date = params[:end_date].present? ? Date.parse(params[:end_date]) : Date.today
+    
+    @health_records = @pet.health_records
+                          .where(recorded_on: start_date..end_date)
+                          .chronological
+
+    respond_to do |format|
+      format.csv do
+        headers['Content-Disposition'] = "attachment; filename=\"#{@pet.name}_health_records_#{Date.today}.csv\""
+        headers['Content-Type'] = 'text/csv'
+      end
+    end
+  end
+
   private
 
   def set_pet

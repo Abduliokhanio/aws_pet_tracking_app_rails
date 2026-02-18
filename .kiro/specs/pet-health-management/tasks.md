@@ -427,58 +427,58 @@ This implementation plan breaks down the Pet Health Management System into incre
     - **Validates: Requirements 11.4**
 
 - [ ] 26. Implement historical data export
-  - [ ] 26.1 Add export action to HealthRecordsController
+  - [x] 26.1 Add export action to HealthRecordsController
     - Implement export method generating PDF or CSV
     - Include date range filtering
     - Format data for printing
     - _Requirements: 13.4_
   
-  - [ ] 26.2 Add export action to MedicationsController
+  - [x] 26.2 Add export action to MedicationsController
     - Implement export method for medication history
     - Include duration and dosage information
     - _Requirements: 13.3_
   
-  - [ ] 26.3 Add export buttons to views
+  - [x] 26.3 Add export buttons to views
     - Add export links to health records index
     - Add export links to medications index
     - _Requirements: 12.6, 13.4_
 
 - [ ] 27. Add custom threshold configuration
-  - [ ] 27.1 Create pet_health_thresholds table migration
+  - [x] 27.1 Create pet_health_thresholds table migration
     - Add table with pet_id, threshold_type, threshold_value, timestamps
     - Add foreign key constraint
     - _Requirements: 2.4_
   
-  - [ ] 27.2 Create PetHealthThreshold model
+  - [x] 27.2 Create PetHealthThreshold model
     - Add belongs_to :pet association
     - Add validations for threshold_type and threshold_value
     - _Requirements: 2.4_
   
-  - [ ] 27.3 Update HealthAlertService to use custom thresholds
+  - [x] 27.3 Update HealthAlertService to use custom thresholds
     - Check for custom thresholds before using defaults
     - _Requirements: 2.4_
   
-  - [ ] 27.4 Write property tests for custom thresholds (Properties 10, 47)
+  - [x] 27.4 Write property tests for custom thresholds (Properties 10, 47)
     - Test threshold persistence and retrieval
     - Test alert sensitivity configuration
     - **Validates: Requirements 2.4, 10.4**
 
 - [ ] 28. Implement alert dismissal functionality
-  - [ ] 28.1 Create dismissed_alerts table migration
+  - [x] 28.1 Create dismissed_alerts table migration
     - Add table with pet_id, alert_type, alert_condition, dismissed_at, timestamps
     - Add foreign key constraint
     - _Requirements: 10.3_
   
-  - [ ] 28.2 Create DismissedAlert model
+  - [x] 28.2 Create DismissedAlert model
     - Add belongs_to :pet association
     - Add validations
     - _Requirements: 10.3_
   
-  - [ ] 28.3 Update HealthAlertService to check dismissed alerts
+  - [x] 28.3 Update HealthAlertService to check dismissed alerts
     - Skip alert generation for dismissed conditions
     - _Requirements: 10.3_
   
-  - [ ] 28.4 Write property test for alert dismissal (Property 11)
+  - [x] 28.4 Write property test for alert dismissal (Property 11)
     - **Property 11: Alert dismissal prevents repetition**
     - **Validates: Requirements 10.3**
 

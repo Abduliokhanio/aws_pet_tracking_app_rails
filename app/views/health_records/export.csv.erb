@@ -1,0 +1,15 @@
+<%- headers = ['Date', 'Weight (lbs)', 'Mood', 'Activity Level', 'Food Intake', 'Medication Name', 'Medication Dose', 'Status', 'Notes'] -%>
+<%= CSV.generate_line(headers) -%>
+<%- @health_records.each do |record| -%>
+<%= CSV.generate_line([
+  record.recorded_on,
+  record.weight,
+  record.mood,
+  record.activity_level,
+  record.food_intake,
+  record.medication_name,
+  record.medication_dose,
+  record.status,
+  record.notes
+]) -%>
+<%- end -%>

@@ -29,10 +29,19 @@ class HealthAlertService
   def check_weight_threshold
     return nil unless @health_record.weight.present?
     
-    threshold = weight_threshold_for_species(@pet.species)
+    # Check for custom threshold first
+    custom_threshold = @pet.pet_health_thresholds.find_by(threshold_type: 'min_weight')
+    threshold = custom_threshold&.threshold_value || weight_threshold_for_species(@pet.species)
+    
     if @health_record.weight < threshold
+      alert_condition = "weight_below_#{threshold}"
+      
+      # Check if this alert has been dismissed
+      return nil if DismissedAlert.dismissed?(@pet, 'low_weight', alert_condition)
+      
       {
         type: 'low_weight',
+        condition: alert_condition,
         message: "Weight below recommended threshold for #{@pet.species}",
         severity: 'high'
       }
@@ -42,9 +51,20 @@ class HealthAlertService
   def check_activity_level
     return nil unless @health_record.activity_level.present?
     
-    if @health_record.activity_level == 'very_low'
+    # Check for custom alert sensitivity
+    custom_sensitivity = @pet.pet_health_thresholds.find_by(threshold_type: 'alert_sensitivity')
+    sensitivity = custom_sensitivity&.threshold_value&.to_i || 1
+    
+    # Only alert on very_low if sensitivity is high (1), or on low/very_low if sensitivity is lower
+    if @health_record.activity_level == 'very_low' || (sensitivity > 1 && @health_record.activity_level == 'low')
+      alert_condition = "activity_#{@health_record.activity_level}"
+      
+      # Check if this alert has been dismissed
+      return nil if DismissedAlert.dismissed?(@pet, 'low_activity', alert_condition)
+      
       {
         type: 'low_activity',
+        condition: alert_condition,
         message: "Activity level is concerning",
         severity: 'medium'
       }
@@ -57,8 +77,14 @@ class HealthAlertService
     
     weights = recent_records.pluck(:weight)
     if consistently_declining?(weights)
+      alert_condition = "declining_trend_#{weights.count}_records"
+      
+      # Check if this alert has been dismissed
+      return nil if DismissedAlert.dismissed?(@pet, 'declining_trend', alert_condition)
+      
       {
         type: 'declining_trend',
+        condition: alert_condition,
         message: "Weight has been declining over recent records",
         severity: 'high'
       }

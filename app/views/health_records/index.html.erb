@@ -5,6 +5,9 @@
 <div class="page-header">
   <h1>📊 Health Records</h1>
   <p class="page-subtitle">Health tracking for <%= @pet.name %></p>
+  <div style="margin-top: 10px;">
+    <%= link_to "📥 Export to CSV", export_pet_health_records_path(@pet, format: :csv), class: "btn-secondary" %>
+  </div>
 </div>
 
 <% if @visualization_data.present? %>
