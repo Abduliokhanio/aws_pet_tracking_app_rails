@@ -7,6 +7,7 @@ class MedicationsController < ApplicationController
     @medications = @pet.medications.order(start_date: :desc)
     @active_medications = @pet.medications.active
     @inactive_medications = @pet.medications.inactive
+    @timeline_data = VisualizationService.new(@pet).medication_timeline_data
   end
 
   # GET /pets/:pet_id/medications/1

@@ -5,7 +5,9 @@ class HealthRecordsController < ApplicationController
   # GET /pets/:pet_id/health_records
   def index
     @health_records = @pet.health_records.chronological.page(params[:page])
-    @visualization_data = VisualizationService.new(@pet).weight_chart_data
+    visualization_service = VisualizationService.new(@pet)
+    @visualization_data = visualization_service.weight_chart_data
+    @health_metrics_data = visualization_service.health_metrics_data
   end
 
   # GET /pets/:pet_id/health_records/1

@@ -383,24 +383,24 @@ This implementation plan breaks down the Pet Health Management System into incre
     - Add dropdown for reminder_type
     - _Requirements: 9.1, 9.4_
 
-- [ ] 24. Add JavaScript for visualizations
-  - [ ] 24.1 Install Chart.js via importmap or npm
+- [x] 24. Add JavaScript for visualizations
+  - [x] 24.1 Install Chart.js via importmap or npm
     - Add Chart.js to asset pipeline
     - _Requirements: 12.1_
   
-  - [ ] 24.2 Create weight chart JavaScript
+  - [x] 24.2 Create weight chart JavaScript
     - Fetch visualization data from controller
     - Render line chart for weight over time
     - Add date range filtering controls
     - _Requirements: 12.1, 12.3_
   
-  - [ ] 24.3 Create medication timeline JavaScript
+  - [x] 24.3 Create medication timeline JavaScript
     - Fetch timeline data from controller
     - Render timeline visualization
     - Show medication periods and dosages
     - _Requirements: 12.2_
   
-  - [ ] 24.4 Create health metrics charts
+  - [x] 24.4 Create health metrics charts
     - Render charts for mood, activity level, food intake
     - Use appropriate chart types (bar, pie)
     - _Requirements: 12.5_

@@ -10,35 +10,35 @@
 <% if @visualization_data.present? %>
   <div class="card">
     <h2>Weight Trend</h2>
-    <canvas id="weightChart" width="400" height="200"></canvas>
+    <div style="position: relative; height: 400px;">
+      <canvas id="weightChart" data-chart-data="<%= @visualization_data.to_json %>"></canvas>
+    </div>
   </div>
+<% end %>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-    const ctx = document.getElementById('weightChart').getContext('2d');
-    const weightChart = new Chart(ctx, {
-      type: 'line',
-      data: <%= raw @visualization_data.to_json %>,
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: false,
-            title: {
-              display: true,
-              text: 'Weight (lbs)'
-            }
-          },
-          x: {
-            title: {
-              display: true,
-              text: 'Date'
-            }
-          }
-        }
-      }
-    });
-  </script>
+<% if @health_metrics_data.present? && (@health_metrics_data[:mood].present? || @health_metrics_data[:activity_level].present? || @health_metrics_data[:food_intake].present?) %>
+  <div class="card">
+    <h2>Health Metrics</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+      <% if @health_metrics_data[:mood].present? %>
+        <div style="position: relative; height: 300px;">
+          <canvas id="moodChart" data-metrics-data="<%= @health_metrics_data.to_json %>"></canvas>
+        </div>
+      <% end %>
+      
+      <% if @health_metrics_data[:activity_level].present? %>
+        <div style="position: relative; height: 300px;">
+          <canvas id="activityChart" data-metrics-data="<%= @health_metrics_data.to_json %>"></canvas>
+        </div>
+      <% end %>
+      
+      <% if @health_metrics_data[:food_intake].present? %>
+        <div style="position: relative; height: 300px;">
+          <canvas id="foodIntakeChart" data-metrics-data="<%= @health_metrics_data.to_json %>"></canvas>
+        </div>
+      <% end %>
+    </div>
+  </div>
 <% end %>
 
 <div id="health_records">

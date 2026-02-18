@@ -10,21 +10,8 @@
 <% if @medications.any? %>
   <div class="card">
     <h2>Medication Timeline</h2>
-    <div id="medicationTimeline">
-      <% @medications.each do |medication| %>
-        <div style="padding: 10px; margin: 5px 0; border-left: 4px solid <%= medication.active? ? '#4CAF50' : '#999' %>; background: #f5f5f5;">
-          <strong><%= medication.medication_name %></strong> - <%= medication.dose %>
-          <br>
-          <small>
-            <%= medication.start_date.strftime("%b %d, %Y") %> 
-            <% if medication.end_date.present? %>
-              to <%= medication.end_date.strftime("%b %d, %Y") %>
-            <% else %>
-              (ongoing)
-            <% end %>
-          </small>
-        </div>
-      <% end %>
+    <div style="position: relative; height: 300px;">
+      <canvas id="medicationTimelineChart" data-timeline-data="<%= @timeline_data.to_json %>"></canvas>
     </div>
   </div>
 <% end %>
