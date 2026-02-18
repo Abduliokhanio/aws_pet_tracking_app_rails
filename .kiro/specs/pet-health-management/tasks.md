@@ -76,7 +76,7 @@ This implementation plan breaks down the Pet Health Management System into incre
     - **Property 1: Weight precision preservation**
     - **Validates: Requirements 1.1**
   
-  - [ ]* 4.3 Write property test for required date validation (Property 2)
+  - [x] 4.3 Write property test for required date validation (Property 2)
     - **Property 2: Required date validation**
     - **Validates: Requirements 1.2**
   
