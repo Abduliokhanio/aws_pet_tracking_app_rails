@@ -1,127 +1,463 @@
-<div class="dashboard-container" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-    <h1>🏥 Health Dashboard for <%= @pet.name %></h1>
-    <%= link_to "← Back to Pet", user_pet_path(@user, @pet), class: "btn-back" %>
+<style>
+  .dashboard-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  .dashboard-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  
+  .dashboard-title {
+    font-size: 3rem;
+    color: #00d4ff;
+    text-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+    margin-bottom: 0.5rem;
+  }
+  
+  .dashboard-subtitle {
+    color: rgba(0, 212, 255, 0.7);
+    font-size: 1.2rem;
+  }
+  
+  .dashboard-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+  }
+  
+  .dashboard-nav-btn {
+    background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8));
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    color: #00d4ff;
+    padding: 1rem 2rem;
+    border-radius: 15px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .dashboard-nav-btn:hover {
+    background: rgba(0, 212, 255, 0.2);
+    border-color: #00d4ff;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+    transform: translateY(-3px);
+  }
+  
+  .dashboard-nav-btn.active {
+    background: linear-gradient(135deg, #7b2cbf, #5a189a);
+    border-color: #9d4edd;
+    color: #e0e0e0;
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .stat-card {
+    background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8));
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .stat-card:hover {
+    transform: translateY(-5px);
+    border-color: #00d4ff;
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+  }
+  
+  .stat-card:hover::before {
+    opacity: 1;
+  }
+  
+  .stat-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .stat-value {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #00d4ff;
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+    margin: 0.5rem 0;
+  }
+  
+  .stat-label {
+    color: rgba(224, 224, 224, 0.7);
+    font-size: 1.1rem;
+  }
+  
+  .section-card {
+    background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8));
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+  
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid rgba(0, 212, 255, 0.2);
+  }
+  
+  .section-title {
+    font-size: 1.8rem;
+    color: #00d4ff;
+    text-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+    margin: 0;
+  }
+  
+  .btn-primary {
+    background: linear-gradient(135deg, #7b2cbf, #5a189a);
+    border: 2px solid #9d4edd;
+    color: #e0e0e0;
+    padding: 0.6rem 1.5rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+  
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #9d4edd, #7b2cbf);
+    box-shadow: 0 0 25px rgba(157, 78, 221, 0.6);
+    transform: translateY(-2px);
+  }
+  
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .data-table thead tr {
+    border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+  }
+  
+  .data-table th {
+    text-align: left;
+    padding: 1rem;
+    color: #00d4ff;
+    font-weight: 600;
+  }
+  
+  .data-table td {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+    color: #e0e0e0;
+  }
+  
+  .data-table tbody tr {
+    transition: all 0.3s ease;
+  }
+  
+  .data-table tbody tr:hover {
+    background: rgba(0, 212, 255, 0.1);
+  }
+  
+  .item-card {
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    border-left: 4px solid #00d4ff;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+  }
+  
+  .item-card:hover {
+    background: rgba(0, 212, 255, 0.1);
+    border-left-color: #9d4edd;
+    transform: translateX(5px);
+  }
+  
+  .item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 0.5rem;
+  }
+  
+  .item-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #00d4ff;
+    margin: 0;
+  }
+  
+  .item-meta {
+    color: rgba(224, 224, 224, 0.7);
+    font-size: 0.95rem;
+    margin: 0.25rem 0;
+  }
+  
+  .badge {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  
+  .badge-success {
+    background: rgba(0, 255, 136, 0.2);
+    color: #00ff88;
+    border: 1px solid #00ff88;
+  }
+  
+  .badge-warning {
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+    border: 1px solid #ffc107;
+  }
+  
+  .badge-danger {
+    background: rgba(255, 50, 50, 0.2);
+    color: #ff3232;
+    border: 1px solid #ff3232;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: rgba(224, 224, 224, 0.5);
+  }
+  
+  .empty-state-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.3;
+  }
+  
+  .quick-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  
+  .btn-action {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 150, 200, 0.2));
+    border: 2px solid #00d4ff;
+    color: #00d4ff;
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .btn-action:hover {
+    background: #00d4ff;
+    color: #0a0e27;
+    box-shadow: 0 0 25px rgba(0, 212, 255, 0.6);
+    transform: translateY(-3px);
+  }
+  
+  @media (max-width: 768px) {
+    .dashboard-title {
+      font-size: 2rem;
+    }
+    
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .dashboard-nav {
+      flex-direction: column;
+    }
+    
+    .dashboard-nav-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1 class="dashboard-title">🏥 Health Management</h1>
+    <p class="dashboard-subtitle">Complete health tracking for <%= @pet.name %></p>
+  </div>
+  
+  <!-- Navigation Tabs -->
+  <div class="dashboard-nav">
+    <%= link_to pet_health_records_path(@pet), class: "dashboard-nav-btn" do %>
+      📊 Health Records
+    <% end %>
+    <%= link_to pet_medications_path(@pet), class: "dashboard-nav-btn" do %>
+      💊 Medications
+    <% end %>
+    <%= link_to pet_reminders_path(@pet), class: "dashboard-nav-btn" do %>
+      ⏰ Reminders
+    <% end %>
+    <%= link_to dashboard_user_pet_path(@user, @pet), class: "dashboard-nav-btn active" do %>
+      🏠 Health Dashboard
+    <% end %>
   </div>
 
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
-    <!-- Quick Stats -->
-    <div style="background: #e3f2fd; padding: 1.5rem; border-radius: 8px;">
-      <h3 style="margin-bottom: 0.5rem;">📊 Health Records</h3>
-      <p style="font-size: 2rem; font-weight: bold; margin: 0.5rem 0;"><%= @pet.health_records.count %></p>
-      <p style="color: #666;">Total records</p>
+  <!-- Quick Stats -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">📊</div>
+      <div class="stat-value"><%= @pet.health_records.count %></div>
+      <div class="stat-label">Health Records</div>
     </div>
 
-    <div style="background: #f3e5f5; padding: 1.5rem; border-radius: 8px;">
-      <h3 style="margin-bottom: 0.5rem;">💊 Active Medications</h3>
-      <p style="font-size: 2rem; font-weight: bold; margin: 0.5rem 0;"><%= @active_medications.count %></p>
-      <p style="color: #666;">Currently active</p>
+    <div class="stat-card">
+      <div class="stat-icon">💊</div>
+      <div class="stat-value"><%= @active_medications.count %></div>
+      <div class="stat-label">Active Medications</div>
     </div>
 
-    <div style="background: #fff3e0; padding: 1.5rem; border-radius: 8px;">
-      <h3 style="margin-bottom: 0.5rem;">⏰ Upcoming Reminders</h3>
-      <p style="font-size: 2rem; font-weight: bold; margin: 0.5rem 0;"><%= @upcoming_reminders.count %></p>
-      <p style="color: #666;">Scheduled</p>
+    <div class="stat-card">
+      <div class="stat-icon">⏰</div>
+      <div class="stat-value"><%= @upcoming_reminders.count %></div>
+      <div class="stat-label">Upcoming Reminders</div>
     </div>
   </div>
 
   <!-- Recent Health Records -->
-  <div style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 1.5rem;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-      <h2>📊 Recent Health Records</h2>
+  <div class="section-card">
+    <div class="section-header">
+      <h2 class="section-title">📊 Recent Health Records</h2>
       <%= link_to "View All →", pet_health_records_path(@pet), class: "btn-primary" %>
     </div>
     
     <% if @recent_health_records.any? %>
-      <table style="width: 100%; border-collapse: collapse;">
+      <table class="data-table">
         <thead>
-          <tr style="border-bottom: 2px solid #ddd;">
-            <th style="text-align: left; padding: 0.75rem;">Date</th>
-            <th style="text-align: left; padding: 0.75rem;">Weight</th>
-            <th style="text-align: left; padding: 0.75rem;">Status</th>
-            <th style="text-align: left; padding: 0.75rem;">Activity</th>
+          <tr>
+            <th>Date</th>
+            <th>Weight</th>
+            <th>Status</th>
+            <th>Activity</th>
           </tr>
         </thead>
         <tbody>
           <% @recent_health_records.each do |record| %>
-            <tr style="border-bottom: 1px solid #eee;">
-              <td style="padding: 0.75rem;"><%= record.recorded_on.strftime("%b %d, %Y") %></td>
-              <td style="padding: 0.75rem;"><%= record.weight ? "#{record.weight} lbs" : "-" %></td>
-              <td style="padding: 0.75rem;"><%= record.status || "-" %></td>
-              <td style="padding: 0.75rem;"><%= record.activity_level || "-" %></td>
+            <tr>
+              <td><%= record.recorded_on.strftime("%b %d, %Y") %></td>
+              <td><%= record.weight ? "#{record.weight} lbs" : "-" %></td>
+              <td><%= record.status || "-" %></td>
+              <td><%= record.activity_level || "-" %></td>
             </tr>
           <% end %>
         </tbody>
       </table>
     <% else %>
-      <p style="color: #666; text-align: center; padding: 2rem;">No health records yet. <%= link_to "Add your first record", new_pet_health_record_path(@pet) %></p>
+      <div class="empty-state">
+        <div class="empty-state-icon">📊</div>
+        <p>No health records yet.</p>
+        <%= link_to "Add your first record", new_pet_health_record_path(@pet), class: "btn-primary" %>
+      </div>
     <% end %>
   </div>
 
   <!-- Active Medications -->
-  <div style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 1.5rem;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-      <h2>💊 Active Medications</h2>
+  <div class="section-card">
+    <div class="section-header">
+      <h2 class="section-title">💊 Active Medications</h2>
       <%= link_to "View All →", pet_medications_path(@pet), class: "btn-primary" %>
     </div>
     
     <% if @active_medications.any? %>
-      <div style="display: grid; gap: 1rem;">
-        <% @active_medications.each do |medication| %>
-          <div style="padding: 1rem; background: #f8f9fa; border-radius: 6px; border-left: 4px solid #4caf50;">
-            <div style="display: flex; justify-content: space-between; align-items: start;">
-              <div>
-                <h4 style="margin: 0 0 0.5rem 0;"><%= medication.medication_name %></h4>
-                <p style="margin: 0; color: #666;">Dose: <%= medication.dose %></p>
-                <p style="margin: 0.25rem 0 0 0; color: #666; font-size: 0.9rem;">Started: <%= medication.start_date.strftime("%b %d, %Y") %></p>
-              </div>
-              <%= link_to "View", pet_medication_path(@pet, medication), class: "btn-primary", style: "font-size: 0.9rem;" %>
+      <% @active_medications.each do |medication| %>
+        <div class="item-card">
+          <div class="item-header">
+            <div>
+              <h4 class="item-title"><%= medication.medication_name %></h4>
+              <p class="item-meta">Dose: <%= medication.dose %></p>
+              <p class="item-meta">Started: <%= medication.start_date.strftime("%b %d, %Y") %></p>
             </div>
+            <%= link_to "View", pet_medication_path(@pet, medication), class: "btn-primary" %>
           </div>
-        <% end %>
-      </div>
+        </div>
+      <% end %>
     <% else %>
-      <p style="color: #666; text-align: center; padding: 2rem;">No active medications. <%= link_to "Add medication", new_pet_medication_path(@pet) %></p>
+      <div class="empty-state">
+        <div class="empty-state-icon">💊</div>
+        <p>No active medications.</p>
+        <%= link_to "Add medication", new_pet_medication_path(@pet), class: "btn-primary" %>
+      </div>
     <% end %>
   </div>
 
   <!-- Upcoming Reminders -->
-  <div style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 1.5rem;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-      <h2>⏰ Upcoming Reminders</h2>
+  <div class="section-card">
+    <div class="section-header">
+      <h2 class="section-title">⏰ Upcoming Reminders</h2>
       <%= link_to "View All →", pet_reminders_path(@pet), class: "btn-primary" %>
     </div>
     
     <% if @upcoming_reminders.any? %>
-      <div style="display: grid; gap: 1rem;">
-        <% @upcoming_reminders.each do |reminder| %>
-          <div style="padding: 1rem; background: #f8f9fa; border-radius: 6px; border-left: 4px solid #2196f3;">
-            <div style="display: flex; justify-content: space-between; align-items: start;">
-              <div>
-                <h4 style="margin: 0 0 0.5rem 0;"><%= reminder.title %></h4>
-                <p style="margin: 0; color: #666;"><%= reminder.reminder_type.humanize %></p>
-                <p style="margin: 0.25rem 0 0 0; color: #666; font-size: 0.9rem;">
-                  <%= reminder.scheduled_date.strftime("%b %d, %Y") %>
-                  <% if reminder.due? %>
-                    <span style="color: #f44336; font-weight: bold;">• DUE</span>
-                  <% end %>
-                </p>
-              </div>
-              <%= link_to "View", pet_reminder_path(@pet, reminder), class: "btn-primary", style: "font-size: 0.9rem;" %>
+      <% @upcoming_reminders.each do |reminder| %>
+        <div class="item-card">
+          <div class="item-header">
+            <div>
+              <h4 class="item-title"><%= reminder.title %></h4>
+              <p class="item-meta"><%= reminder.reminder_type.humanize %></p>
+              <p class="item-meta">
+                <%= reminder.scheduled_date.strftime("%b %d, %Y") %>
+                <% if reminder.due? %>
+                  <span class="badge badge-danger">DUE</span>
+                <% end %>
+              </p>
             </div>
+            <%= link_to "View", pet_reminder_path(@pet, reminder), class: "btn-primary" %>
           </div>
-        <% end %>
-      </div>
+        </div>
+      <% end %>
     <% else %>
-      <p style="color: #666; text-align: center; padding: 2rem;">No upcoming reminders. <%= link_to "Add reminder", new_pet_reminder_path(@pet) %></p>
+      <div class="empty-state">
+        <div class="empty-state-icon">⏰</div>
+        <p>No upcoming reminders.</p>
+        <%= link_to "Add reminder", new_pet_reminder_path(@pet), class: "btn-primary" %>
+      </div>
     <% end %>
   </div>
 
   <!-- Weight Chart -->
   <% if @recent_health_records.any? && @recent_health_records.any?(&:weight) %>
-    <div style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-      <h2 style="margin-bottom: 1rem;">📈 Weight Trend (Last 30 Days)</h2>
-      <canvas id="weightChart" style="max-height: 300px;"></canvas>
+    <div class="section-card">
+      <h2 class="section-title">📈 Weight Trend (Last 30 Days)</h2>
+      <canvas id="weightChart" style="max-height: 400px;"></canvas>
     </div>
 
     <script type="module">
@@ -139,7 +475,10 @@
           plugins: {
             legend: {
               display: true,
-              position: 'top'
+              position: 'top',
+              labels: {
+                color: '#00d4ff'
+              }
             }
           },
           scales: {
@@ -147,13 +486,27 @@
               beginAtZero: false,
               title: {
                 display: true,
-                text: 'Weight (lbs)'
+                text: 'Weight (lbs)',
+                color: '#00d4ff'
+              },
+              ticks: {
+                color: '#e0e0e0'
+              },
+              grid: {
+                color: 'rgba(0, 212, 255, 0.1)'
               }
             },
             x: {
               title: {
                 display: true,
-                text: 'Date'
+                text: 'Date',
+                color: '#00d4ff'
+              },
+              ticks: {
+                color: '#e0e0e0'
+              },
+              grid: {
+                color: 'rgba(0, 212, 255, 0.1)'
               }
             }
           }
@@ -163,12 +516,21 @@
   <% end %>
 
   <!-- Quick Actions -->
-  <div style="margin-top: 2rem; padding: 1.5rem; background: #f8f9fa; border-radius: 8px;">
-    <h3 style="margin-bottom: 1rem;">⚡ Quick Actions</h3>
-    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-      <%= link_to "➕ Add Health Record", new_pet_health_record_path(@pet), class: "btn-primary" %>
-      <%= link_to "➕ Add Medication", new_pet_medication_path(@pet), class: "btn-primary" %>
-      <%= link_to "➕ Add Reminder", new_pet_reminder_path(@pet), class: "btn-primary" %>
+  <div class="section-card">
+    <h3 class="section-title">⚡ Quick Actions</h3>
+    <div class="quick-actions">
+      <%= link_to new_pet_health_record_path(@pet), class: "btn-action" do %>
+        ➕ Add Health Record
+      <% end %>
+      <%= link_to new_pet_medication_path(@pet), class: "btn-action" do %>
+        ➕ Add Medication
+      <% end %>
+      <%= link_to new_pet_reminder_path(@pet), class: "btn-action" do %>
+        ➕ Add Reminder
+      <% end %>
+      <%= link_to user_pet_path(@user, @pet), class: "btn-action" do %>
+        ← Back to Pet
+      <% end %>
     </div>
   </div>
 </div>

@@ -2,12 +2,67 @@
 
 <% content_for :title, "Health Records" %>
 
+<style>
+  .dashboard-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem auto;
+    flex-wrap: wrap;
+    max-width: 1200px;
+  }
+  
+  .dashboard-nav-btn {
+    background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8));
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    color: #00d4ff;
+    padding: 1rem 2rem;
+    border-radius: 15px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .dashboard-nav-btn:hover {
+    background: rgba(0, 212, 255, 0.2);
+    border-color: #00d4ff;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+    transform: translateY(-3px);
+  }
+  
+  .dashboard-nav-btn.active {
+    background: linear-gradient(135deg, #7b2cbf, #5a189a);
+    border-color: #9d4edd;
+    color: #e0e0e0;
+  }
+</style>
+
 <div class="page-header">
   <h1>📊 Health Records</h1>
   <p class="page-subtitle">Health tracking for <%= @pet.name %></p>
-  <div style="margin-top: 10px;">
-    <%= link_to "📥 Export to CSV", export_pet_health_records_path(@pet, format: :csv), class: "btn-secondary" %>
-  </div>
+</div>
+
+<!-- Navigation Tabs -->
+<div class="dashboard-nav">
+  <%= link_to pet_health_records_path(@pet), class: "dashboard-nav-btn active" do %>
+    📊 Health Records
+  <% end %>
+  <%= link_to pet_medications_path(@pet), class: "dashboard-nav-btn" do %>
+    💊 Medications
+  <% end %>
+  <%= link_to pet_reminders_path(@pet), class: "dashboard-nav-btn" do %>
+    ⏰ Reminders
+  <% end %>
+  <%= link_to dashboard_user_pet_path(@user, @pet), class: "dashboard-nav-btn" do %>
+    🏠 Health Dashboard
+  <% end %>
+</div>
+
+<div style="text-align: center; margin: 1rem 0;">
+  <%= link_to "📥 Export to CSV", export_pet_health_records_path(@pet, format: :csv), class: "btn-secondary" %>
 </div>
 
 <% if @visualization_data.present? %>
