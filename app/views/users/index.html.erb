@@ -2,15 +2,26 @@
 
 <% content_for :title, "Users" %>
 
-<h1>Users</h1>
+<div class="page-header">
+  <h1>👥 Users</h1>
+  <p class="page-subtitle">Manage all registered users</p>
+</div>
 
 <div id="users">
   <% @users.each do |user| %>
-    <%= render user %>
-    <p>
-      <%= link_to "Show this user", user %>
-    </p>
+    <div class="card">
+      <%= render user %>
+      <div class="card-actions">
+        <%= link_to "View Details", user, class: "btn-card" %>
+      </div>
+    </div>
   <% end %>
 </div>
 
-<%= link_to "New user", new_user_path %>
+<div class="empty-state" style="<%= 'display: none;' if @users.any? %>">
+  <p>🌟 No users yet. Create your first user to get started!</p>
+</div>
+
+<div class="floating-action">
+  <%= link_to "➕ New User", new_user_path, class: "btn-floating" %>
+</div>

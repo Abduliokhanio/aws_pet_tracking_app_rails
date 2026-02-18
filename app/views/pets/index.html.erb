@@ -2,18 +2,27 @@
 
 <% content_for :title, "Pets" %>
 
-<h1>Pets</h1>
+<div class="page-header">
+  <h1>🐾 Pets</h1>
+  <p class="page-subtitle">All pets for <%= @user.name %></p>
+</div>
 
 <div id="pets">
   <% @pets.each do |pet| %>
-    <%= render pet %>
-    <p>
-      <%= link_to "Show this pet", [@user, pet] %>
-    </p>
+    <div class="card">
+      <%= render pet %>
+      <div class="card-actions">
+        <%= link_to "View Details", [@user, pet], class: "btn-card" %>
+      </div>
+    </div>
   <% end %>
 </div>
 
-<%= link_to "New pet", new_user_pet_path %>
+<div class="empty-state" style="<%= 'display: none;' if @pets.any? %>">
+  <p>🌟 No pets yet. Add a pet for this user!</p>
+</div>
 
-<%= link_to "Users", users_path %>
-
+<div class="floating-action">
+  <%= link_to "➕ New Pet", new_user_pet_path, class: "btn-floating" %>
+  <%= link_to "👥 Back to Users", users_path, class: "btn-floating-secondary" %>
+</div>
