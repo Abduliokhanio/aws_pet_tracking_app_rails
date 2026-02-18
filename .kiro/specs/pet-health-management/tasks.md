@@ -204,7 +204,7 @@ This implementation plan breaks down the Pet Health Management System into incre
     - Call HealthAlertService.new(self).check_and_alert
     - _Requirements: 2.1, 2.2, 2.5_
   
-  - [-] 10.3 Write property tests for health alert service (Properties 7-9)
+  - [x] 10.3 Write property tests for health alert service (Properties 7-9)
     - Test low weight alert generation
     - Test low activity alert generation
     - Test declining trend detection
