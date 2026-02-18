@@ -168,13 +168,13 @@ This implementation plan breaks down the Pet Health Management System into incre
     - Add after_save and after_destroy callbacks to update veterinarian cache
     - _Requirements: 5.1, 5.3, 5.4_
   
-  - [-] 7.3 Write property tests for veterinarian and rating models (Properties 17-25)
+  - [x] 7.3 Write property tests for veterinarian and rating models (Properties 17-25)
     - Test veterinarian required fields, associations, and office changes
     - Test rating constraints, uniqueness, and average calculation
     - **Validates: Requirements 4.1, 4.2, 4.3, 4.4, 4.5, 5.1, 5.2, 5.3, 5.4, 5.5**
 
 - [ ] 8. Implement Reminder model with validations
-  - [~] 8.1 Create Reminder model
+  - [x] 8.1 Create Reminder model
     - Add belongs_to :pet association
     - Add validations for reminder_type (inclusion), scheduled_date (presence), title (presence)
     - Add scopes: upcoming, due, completed
@@ -182,7 +182,7 @@ This implementation plan breaks down the Pet Health Management System into incre
     - Add complete! instance method
     - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5, 9.6_
   
-  - [~] 8.2 Write property tests for reminder model (Properties 40-45)
+  - [x] 8.2 Write property tests for reminder model (Properties 40-45)
     - Test reminder required fields, validation, status detection, and grouping
     - **Validates: Requirements 9.1, 9.2, 9.3, 9.4, 9.5, 9.6**
 
