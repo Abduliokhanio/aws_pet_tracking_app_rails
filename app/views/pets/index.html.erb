@@ -1,4 +1,6 @@
-<p style="color: green"><%= notice %></p>
+<% if notice.present? %>
+  <p style="color: green"><%= notice %></p>
+<% end %>
 
 <% content_for :title, "Pets" %>
 
