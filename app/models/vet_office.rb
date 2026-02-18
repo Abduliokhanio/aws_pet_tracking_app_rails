@@ -1,7 +1,7 @@
 class VetOffice < ApplicationRecord
   has_one :address, dependent: :destroy
   has_many :contacts, dependent: :destroy
-  has_many :veterinarians, dependent: :nullify
+  # has_many :veterinarians, dependent: :nullify  # TODO: Uncomment when Veterinarian model is created (task 7.1)
   
   validates :name, presence: true
   

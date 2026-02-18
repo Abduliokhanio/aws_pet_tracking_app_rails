@@ -131,21 +131,21 @@ This implementation plan breaks down the Pet Health Management System into incre
     - Add primary_phone and primary_email methods
     - _Requirements: 6.1, 6.2, 6.3_
   
-  - [-] 6.2 Create Address model
+  - [x] 6.2 Create Address model
     - Add belongs_to :vet_office association
     - Add validations for city, state, zipcode, country (presence)
     - Add conditional zipcode format validation for US
     - Add formatted instance method
     - _Requirements: 7.1, 7.2, 7.3, 7.4_
   
-  - [~] 6.3 Create Contact model
+  - [x] 6.3 Create Contact model
     - Add belongs_to :vet_office association
     - Add validations for contact_type (inclusion), contact_value (presence)
     - Add conditional format validations for email and phone
     - Add before_save callback: ensure_single_primary_per_type
     - _Requirements: 8.1, 8.3, 8.5_
   
-  - [~] 6.4 Write property tests for vet office models (Properties 26-28, 31-34, 35, 37-39)
+  - [x] 6.4 Write property tests for vet office models (Properties 26-28, 31-34, 35, 37-39)
     - Test vet office required fields, associations, and one-to-one relationships
     - Test address required fields, validation, and formatting
     - Test contact required fields, validation, and primary uniqueness
