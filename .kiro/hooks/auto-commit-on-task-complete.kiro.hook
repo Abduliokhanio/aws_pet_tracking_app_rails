@@ -1,0 +1,14 @@
+{
+  "enabled": true,
+  "name": "Auto Commit on Task Complete",
+  "description": "Automatically stages and commits all changes with a summary message after each agent task completes",
+  "version": "1",
+  "when": {
+    "type": "agentStop"
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "git add -A && git commit -m \"Auto-commit: $(echo '$KIRO_PROMPT' | head -c 100)\"",
+    "timeout": 30
+  }
+}

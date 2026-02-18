@@ -52,6 +52,12 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # Property-based testing for comprehensive test coverage
+  gem "rantly"
+
+  # Test data generation with factories
+  gem "factory_bot_rails"
 end
 
 group :development do
