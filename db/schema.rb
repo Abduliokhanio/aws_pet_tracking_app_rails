@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_18_212948) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_18_223150) do
   create_table "addresses", force: :cascade do |t|
     t.string "city", null: false
     t.string "country", null: false
@@ -66,7 +66,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_18_212948) do
 
   create_table "medications", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.string "dose", null: false
+    t.decimal "dose", precision: 10, scale: 2, null: false
     t.date "end_date"
     t.string "medication_name", null: false
     t.text "notes"

@@ -17,8 +17,9 @@
   </div>
 
   <div>
-    <%= form.label :dose, style: "display: block" %>
-    <%= form.text_field :dose, required: true, placeholder: "e.g., 10mg twice daily" %>
+    <%= form.label :dose, "Dosage (mg)", style: "display: block" %>
+    <%= form.number_field :dose, required: true, step: 0.01, min: 0, placeholder: "e.g., 25.5" %>
+    <small style="color: rgba(224, 224, 224, 0.7);">Enter dosage in milligrams (mg)</small>
   </div>
 
   <div>

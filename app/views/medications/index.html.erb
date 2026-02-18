@@ -146,7 +146,7 @@
               <span class="medication-status status-active">Active</span>
             </div>
             <div class="medication-details">
-              <strong>Dose:</strong> <%= medication.dose %><br>
+              <strong>Dose:</strong> <%= medication.dose %> mg<br>
               <strong>Started:</strong> <%= medication.start_date.strftime("%b %d, %Y") %>
               <% if medication.end_date %>
                 | <strong>Ends:</strong> <%= medication.end_date.strftime("%b %d, %Y") %>
@@ -176,7 +176,7 @@
               <span class="medication-status status-inactive">Inactive</span>
             </div>
             <div class="medication-details">
-              <strong>Dose:</strong> <%= medication.dose %><br>
+              <strong>Dose:</strong> <%= medication.dose %> mg<br>
               <strong>Period:</strong> <%= medication.start_date.strftime("%b %d, %Y") %> - <%= medication.end_date&.strftime("%b %d, %Y") || "Ongoing" %>
             </div>
           </div>

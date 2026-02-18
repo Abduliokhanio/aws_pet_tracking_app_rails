@@ -71,7 +71,7 @@
     <div class="info-grid">
       <div class="info-item">
         <div class="info-label">Dosage</div>
-        <div class="info-value"><%= @medication.dose %></div>
+        <div class="info-value"><%= @medication.dose %> mg</div>
       </div>
       
       <div class="info-item">
@@ -117,7 +117,7 @@
   </div>
 
   <div class="info-card">
-    <h2 style="color: #00d4ff; margin-bottom: 1.5rem;">📊 Medication Timeline</h2>
+    <h2 style="color: #00d4ff; margin-bottom: 1.5rem;">📊 Dosage Timeline</h2>
     <div style="position: relative; height: 300px;">
       <canvas id="medicationUsageChart"></canvas>
     </div>
@@ -150,6 +150,7 @@
         const startDate = new Date('<%= @medication.start_date.iso8601 %>');
         const endDate = <%= @medication.end_date ? "new Date('#{@medication.end_date.iso8601}')" : 'new Date()' %>;
         const today = new Date();
+        const dosage = <%= @medication.dose %>;
         
         // Generate daily data points
         const labels = [];
@@ -158,7 +159,7 @@
         
         while (currentDate <= endDate && currentDate <= today) {
           labels.push(currentDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
-          data.push(1);
+          data.push(dosage); // Show the dosage amount
           currentDate.setDate(currentDate.getDate() + 1);
         }
         
@@ -170,13 +171,14 @@
           data: {
             labels: labels,
             datasets: [{
-              label: 'Medication Active',
+              label: 'Daily Dosage (mg)',
               data: data,
               borderColor: '#00d4ff',
               backgroundColor: 'rgba(0, 212, 255, 0.2)',
               fill: true,
               stepped: true,
-              pointRadius: 0,
+              pointRadius: 2,
+              pointHoverRadius: 5,
               borderWidth: 3
             }]
           },
@@ -184,21 +186,53 @@
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-              legend: { display: false },
+              legend: { 
+                display: true,
+                labels: { color: '#00d4ff' }
+              },
               title: {
                 display: true,
-                text: 'Medication Usage Timeline',
+                text: 'Medication Dosage Over Time',
                 color: '#00d4ff',
                 font: { size: 16 }
+              },
+              tooltip: {
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                titleColor: '#00d4ff',
+                bodyColor: '#e0e0e0',
+                borderColor: '#00d4ff',
+                borderWidth: 1,
+                callbacks: {
+                  label: function(context) {
+                    return 'Dosage: ' + context.parsed.y + ' mg';
+                  }
+                }
               }
             },
             scales: {
               y: {
-                display: false,
-                min: 0,
-                max: 1.5
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: 'Dosage (mg)',
+                  color: '#00d4ff'
+                },
+                ticks: {
+                  color: '#e0e0e0',
+                  callback: function(value) {
+                    return value + ' mg';
+                  }
+                },
+                grid: {
+                  color: 'rgba(0, 212, 255, 0.1)'
+                }
               },
               x: {
+                title: {
+                  display: true,
+                  text: 'Date',
+                  color: '#00d4ff'
+                },
                 ticks: {
                   color: '#e0e0e0',
                   maxRotation: 45,

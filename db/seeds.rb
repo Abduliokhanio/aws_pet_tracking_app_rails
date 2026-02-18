@@ -1,15 +1,15 @@
-# Clear existing data
+# Clear existing data in correct order (respecting foreign keys)
 puts "Clearing existing data..."
+Rating.destroy_all
 DismissedAlert.destroy_all
 PetHealthThreshold.destroy_all
-Rating.destroy_all
+Reminder.destroy_all
+Medication.destroy_all
+HealthRecord.destroy_all
 Veterinarian.destroy_all
 Contact.destroy_all
 Address.destroy_all
 VetOffice.destroy_all
-Reminder.destroy_all
-Medication.destroy_all
-HealthRecord.destroy_all
 Pet.destroy_all
 User.destroy_all
 
@@ -57,7 +57,7 @@ pets.each do |pet|
 end
 
 puts "Creating medications..."
-medication_names = ["Antibiotics", "Pain Relief", "Flea Treatment", "Heartworm Prevention", "Allergy Medicine"]
+medication_names = ["Amoxicillin", "Carprofen", "Fipronil", "Ivermectin", "Cetirizine", "Prednisone", "Metronidazole"]
 pets.each do |pet|
   # Create 1-3 medications per pet
   rand(1..3).times do
@@ -66,10 +66,10 @@ pets.each do |pet|
     Medication.create!(
       pet: pet,
       medication_name: medication_names.sample,
-      dose: "#{rand(1..3)} tablet(s) #{['daily', 'twice daily', 'weekly'].sample}",
+      dose: rand(5.0..500.0).round(2), # Dosage in mg
       start_date: start_date,
       end_date: [nil, (start_date + rand(7..30).days)].sample,
-      notes: "Prescribed by veterinarian"
+      notes: "Prescribed by veterinarian - #{['once daily', 'twice daily', 'three times daily', 'weekly'].sample}"
     )
   end
 end
