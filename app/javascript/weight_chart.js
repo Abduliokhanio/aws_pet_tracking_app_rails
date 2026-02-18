@@ -1,8 +1,15 @@
 // Initialize weight chart when DOM is loaded
 document.addEventListener('turbo:load', () => {
+  console.log('Weight chart script loaded, Chart available:', typeof Chart !== 'undefined');
+  
   const chartCanvas = document.getElementById('weightChart');
   
-  if (!chartCanvas) return;
+  if (!chartCanvas) {
+    console.log('Weight chart canvas not found');
+    return;
+  }
+  
+  console.log('Weight chart canvas found');
   
   // Get data from data attributes
   const chartDataStr = chartCanvas.dataset.chartData;
