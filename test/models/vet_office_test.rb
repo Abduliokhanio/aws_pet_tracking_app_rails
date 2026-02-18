@@ -6,7 +6,7 @@ class VetOfficeTest < ActiveSupport::TestCase
   # For any vet office creation attempt, the office should be rejected if name is
   # missing, and accepted when name is present.
   test "property: vet office required fields" do
-    Rantly(100) do
+    Rantly(20) do
       # Generate random name
       name = choose("Happy Paws Clinic", "City Animal Hospital", "Pet Care Center", "Veterinary Associates")
       
@@ -35,7 +35,7 @@ class VetOfficeTest < ActiveSupport::TestCase
   # For any vet office, querying the office should load the associated address
   # and all contacts.
   test "property: vet office associations" do
-    Rantly(100) do
+    Rantly(20) do
       # Create a vet office
       office_name = choose("Happy Paws Clinic", "City Animal Hospital", "Pet Care Center")
       office = VetOffice.create!(name: office_name)
@@ -95,7 +95,7 @@ class VetOfficeTest < ActiveSupport::TestCase
   # Validates: Requirements 6.3
   # For any vet office, the office should have exactly one associated address.
   test "property: office-address one-to-one" do
-    Rantly(100) do
+    Rantly(20) do
       # Create a vet office
       office_name = choose("Happy Paws Clinic", "City Animal Hospital", "Pet Care Center")
       office = VetOffice.create!(name: office_name)

@@ -152,7 +152,7 @@ This implementation plan breaks down the Pet Health Management System into incre
     - **Validates: Requirements 6.1, 6.2, 6.3, 7.1, 7.2, 7.3, 7.4, 8.1, 8.3, 8.5**
 
 - [ ] 7. Implement veterinarian and rating models
-  - [~] 7.1 Create Veterinarian model
+  - [x] 7.1 Create Veterinarian model
     - Add belongs_to :vet_office association
     - Add has_many :ratings, dependent: :restrict_with_error association
     - Add validation for name (presence)
@@ -160,7 +160,7 @@ This implementation plan breaks down the Pet Health Management System into incre
     - Add average_rating and total_ratings methods
     - _Requirements: 4.1, 4.2, 4.3, 11.4_
   
-  - [~] 7.2 Create Rating model
+  - [x] 7.2 Create Rating model
     - Add belongs_to :veterinarian association
     - Add belongs_to :user association
     - Add validation for rating_value (inclusion: 1..5)
@@ -168,7 +168,7 @@ This implementation plan breaks down the Pet Health Management System into incre
     - Add after_save and after_destroy callbacks to update veterinarian cache
     - _Requirements: 5.1, 5.3, 5.4_
   
-  - [~] 7.3 Write property tests for veterinarian and rating models (Properties 17-25)
+  - [-] 7.3 Write property tests for veterinarian and rating models (Properties 17-25)
     - Test veterinarian required fields, associations, and office changes
     - Test rating constraints, uniqueness, and average calculation
     - **Validates: Requirements 4.1, 4.2, 4.3, 4.4, 4.5, 5.1, 5.2, 5.3, 5.4, 5.5**

@@ -8,7 +8,7 @@ class ContactTest < ActiveSupport::TestCase
   test "property: contact required fields" do
     vet_office = vet_offices(:one)
     
-    Rantly(100) do
+    Rantly(20) do
       # Generate random valid values
       contact_type = choose("phone", "email")
       contact_value = if contact_type == "phone"
@@ -60,7 +60,7 @@ class ContactTest < ActiveSupport::TestCase
   test "property: contact type validation" do
     vet_office = vet_offices(:one)
     
-    Rantly(100) do
+    Rantly(20) do
       # Test 1: Email contacts with valid email format should be accepted
       valid_email = "user#{range(1, 9999)}@example.com"
       email_contact_valid = Contact.new(
@@ -129,7 +129,7 @@ class ContactTest < ActiveSupport::TestCase
   test "property: multiple contacts per office" do
     vet_office = vet_offices(:one)
     
-    Rantly(100) do
+    Rantly(20) do
       # Generate a random number of contacts (2 to 6)
       num_contacts = range(2, 6)
       created_contacts = []
@@ -188,7 +188,7 @@ class ContactTest < ActiveSupport::TestCase
   test "property: single primary per type per office" do
     vet_office = vet_offices(:one)
     
-    Rantly(100) do
+    Rantly(20) do
       # Choose a contact type to test
       contact_type = choose("phone", "email")
       

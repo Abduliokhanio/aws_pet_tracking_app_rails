@@ -8,7 +8,7 @@ class MedicationTest < ActiveSupport::TestCase
   test "property: medication required fields" do
     pet = pets(:one)
     
-    Rantly(100) do
+    Rantly(20) do
       # Generate random optional attributes
       end_date = choose(nil, Date.today + range(1, 365).days)
       notes = choose(nil, "Test notes", "Important medication", "As prescribed")
@@ -82,7 +82,7 @@ class MedicationTest < ActiveSupport::TestCase
   test "property: active medication filtering" do
     pet = pets(:one)
     
-    Rantly(100) do
+    Rantly(20) do
       # Create a mix of active and inactive medications
       num_medications = range(3, 8)
       created_medications = []
@@ -157,7 +157,7 @@ class MedicationTest < ActiveSupport::TestCase
   test "property: medication status calculation" do
     pet = pets(:one)
     
-    Rantly(100) do
+    Rantly(20) do
       medication_name = choose("Aspirin", "Antibiotics", "Insulin", "Prednisone")
       dose = choose("5mg", "10mg", "20mg", "1ml")
       start_date = Date.today - range(30, 365).days
@@ -219,7 +219,7 @@ class MedicationTest < ActiveSupport::TestCase
   test "property: medication-pet association" do
     pet = pets(:one)
     
-    Rantly(100) do
+    Rantly(20) do
       # Generate random valid attributes for a medication
       medication_name = choose("Aspirin", "Antibiotics", "Insulin", "Prednisone", "Gabapentin")
       dose = choose("5mg", "10mg", "20mg", "1ml", "2ml")

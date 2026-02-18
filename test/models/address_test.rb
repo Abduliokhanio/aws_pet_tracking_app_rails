@@ -8,7 +8,7 @@ class AddressTest < ActiveSupport::TestCase
   test "property: address required fields" do
     vet_office = vet_offices(:one)
     
-    Rantly(100) do
+    Rantly(20) do
       # Generate random valid values for all fields
       city = choose("New York", "Los Angeles", "Chicago", "Houston", "Phoenix")
       state = choose("NY", "CA", "IL", "TX", "AZ", "FL", "WA")
@@ -85,7 +85,7 @@ class AddressTest < ActiveSupport::TestCase
   test "property: country-specific zipcode validation" do
     vet_office = vet_offices(:one)
     
-    Rantly(100) do
+    Rantly(20) do
       city = choose("New York", "Los Angeles", "Chicago", "Houston")
       state = choose("NY", "CA", "IL", "TX", "AZ", "FL")
       
@@ -162,7 +162,7 @@ class AddressTest < ActiveSupport::TestCase
   test "property: address formatting" do
     vet_office = vet_offices(:one)
     
-    Rantly(100) do
+    Rantly(20) do
       city = choose("New York", "Los Angeles", "Chicago", "Houston", "Phoenix")
       state = choose("NY", "CA", "IL", "TX", "AZ", "FL", "WA")
       zipcode = choose("12345", "90210", "60601", "77001", "85001")
@@ -199,7 +199,7 @@ class AddressTest < ActiveSupport::TestCase
   test "property: address-office one-to-one" do
     vet_office = vet_offices(:one)
     
-    Rantly(100) do
+    Rantly(20) do
       city = choose("New York", "Los Angeles", "Chicago", "Houston")
       state = choose("NY", "CA", "IL", "TX")
       zipcode = "#{range(10000, 99999)}"

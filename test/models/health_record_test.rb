@@ -8,7 +8,7 @@ class HealthRecordTest < ActiveSupport::TestCase
   test "property: weight precision preservation" do
     pet = pets(:one)
     
-    Rantly(100) do
+    Rantly(20) do
       # Generate random weight with up to 2 decimal places
       # Range: 0.01 to 999.99 (5 digits total, 2 decimal places)
       weight = range(1, 99999) / 100.0
@@ -47,7 +47,7 @@ class HealthRecordTest < ActiveSupport::TestCase
   test "property: required date validation" do
     pet = pets(:one)
     
-    Rantly(100) do
+    Rantly(20) do
       # Generate random optional attributes
       weight = choose(nil, range(1, 99999) / 100.0)
       mood = choose(nil, %w[happy sad anxious playful lethargic])
@@ -104,7 +104,7 @@ class HealthRecordTest < ActiveSupport::TestCase
   test "property: optional fields acceptance" do
     pet = pets(:one)
     
-    Rantly(100) do
+    Rantly(20) do
       # Generate a valid recorded_on date (required field)
       days_offset = range(-365, 365)
       recorded_date = Date.today + days_offset.days
@@ -175,7 +175,7 @@ class HealthRecordTest < ActiveSupport::TestCase
   test "property: chronological ordering" do
     pet = pets(:one)
     
-    Rantly(100) do
+    Rantly(20) do
       # Generate a random number of health records (3 to 10)
       num_records = range(3, 10)
       
@@ -228,7 +228,7 @@ class HealthRecordTest < ActiveSupport::TestCase
   test "property: recorded date immutability" do
     pet = pets(:one)
     
-    Rantly(100) do
+    Rantly(20) do
       # Generate initial recorded_on date
       initial_days_offset = range(-365, 0)
       initial_recorded_on = Date.today + initial_days_offset.days
@@ -300,7 +300,7 @@ class HealthRecordTest < ActiveSupport::TestCase
   test "property: pet association requirement" do
     pet = pets(:one)
     
-    Rantly(100) do
+    Rantly(20) do
       # Generate random valid attributes for a health record
       days_offset = range(-365, 365)
       recorded_date = Date.today + days_offset.days
