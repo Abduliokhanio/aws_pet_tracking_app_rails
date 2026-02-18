@@ -314,7 +314,7 @@ This implementation plan breaks down the Pet Health Management System into incre
     - Add member route: post :complete
     - _Requirements: 9.1_
 
-- [ ] 19. Checkpoint - Ensure all controller tests pass
+- [x] 19. Checkpoint - Ensure all controller tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 20. Create views for health records
@@ -482,7 +482,7 @@ This implementation plan breaks down the Pet Health Management System into incre
     - **Property 11: Alert dismissal prevents repetition**
     - **Validates: Requirements 10.3**
 
-- [ ] 29. Final checkpoint - Run full test suite
+- [x] 29. Final checkpoint - Run full test suite
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 30. Integration and final wiring
