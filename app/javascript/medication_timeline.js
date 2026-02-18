@@ -1,79 +1,67 @@
-import { Chart, registerables } from 'chart.js';
-
-// Register Chart.js components
-Chart.register(...registerables);
-
 // Initialize medication timeline chart when DOM is loaded
 document.addEventListener('turbo:load', () => {
   const chartCanvas = document.getElementById('medicationTimelineChart');
   
   if (!chartCanvas) return;
   
-  // Get data from data attributes
-  const timelineData = JSON.parse(chartCanvas.dataset.timelineData || '[]');
+  const timelineDataStr = chartCanvas.dataset.timelineData;
+  if (!timelineDataStr) return;
   
-  if (timelineData.length === 0) {
+  let timelineData;
+  try {
+    timelineData = JSON.parse(timelineDataStr);
+  } catch (e) {
+    console.error('Error parsing timeline data:', e);
     return;
   }
   
-  // Transform timeline data into Chart.js format
-  const datasets = timelineData.map((med, index) => {
-    const startDate = new Date(med.start);
-    const endDate = new Date(med.end);
-    
-    return {
-      label: `${med.name} (${med.dose})`,
-      data: [
-        { x: startDate, y: index },
-        { x: endDate, y: index }
-      ],
-      borderColor: med.active ? 'rgb(76, 175, 80)' : 'rgb(158, 158, 158)',
-      backgroundColor: med.active ? 'rgba(76, 175, 80, 0.2)' : 'rgba(158, 158, 158, 0.2)',
-      borderWidth: 3,
-      pointRadius: 5,
-      pointHoverRadius: 7,
-      showLine: true,
-      tension: 0
-    };
+  if (!timelineData || timelineData.length === 0) return;
+  
+  // Prepare data for horizontal bar chart
+  const labels = timelineData.map(med => med.name);
+  const startDates = timelineData.map(med => new Date(med.start).getTime());
+  const durations = timelineData.map(med => {
+    const start = new Date(med.start);
+    const end = new Date(med.end);
+    return end.getTime() - start.getTime();
   });
   
-  // Create the chart
   const ctx = chartCanvas.getContext('2d');
   new Chart(ctx, {
-    type: 'line',
+    type: 'bar',
     data: {
-      datasets: datasets
+      labels: labels,
+      datasets: [{
+        label: 'Medication Duration',
+        data: durations.map((d, i) => ({
+          x: [startDates[i], startDates[i] + d],
+          y: i
+        })),
+        backgroundColor: timelineData.map(med => 
+          med.active ? 'rgba(0, 212, 255, 0.6)' : 'rgba(128, 128, 128, 0.4)'
+        ),
+        borderColor: '#00d4ff',
+        borderWidth: 2
+      }]
     },
     options: {
+      indexAxis: 'y',
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          display: true,
-          position: 'top',
-          labels: {
-            usePointStyle: true,
-            padding: 15
-          }
+          display: false
         },
         title: {
           display: true,
           text: 'Medication Timeline',
-          font: {
-            size: 16
-          }
+          color: '#00d4ff'
         },
         tooltip: {
           callbacks: {
             label: function(context) {
-              const med = timelineData[context.datasetIndex];
-              const date = new Date(context.parsed.x);
-              return [
-                `${med.name}`,
-                `Dose: ${med.dose}`,
-                `Date: ${date.toLocaleDateString()}`,
-                `Status: ${med.active ? 'Active' : 'Inactive'}`
-              ];
+              const med = timelineData[context.dataIndex];
+              return `${med.dose} (${med.start} to ${med.end})`;
             }
           }
         }
@@ -82,75 +70,16 @@ document.addEventListener('turbo:load', () => {
         x: {
           type: 'time',
           time: {
-            unit: 'month',
-            displayFormats: {
-              month: 'MMM yyyy'
-            }
+            unit: 'day'
           },
-          title: {
-            display: true,
-            text: 'Date'
-          }
+          ticks: { color: '#e0e0e0' },
+          grid: { color: 'rgba(0, 212, 255, 0.1)' }
         },
         y: {
-          display: false,
-          min: -0.5,
-          max: timelineData.length - 0.5
+          ticks: { color: '#e0e0e0' },
+          grid: { color: 'rgba(0, 212, 255, 0.1)' }
         }
-      },
-      interaction: {
-        mode: 'nearest',
-        axis: 'x',
-        intersect: false
       }
     }
   });
 });
-
-// Export for use in other modules if needed
-export function initializeMedicationTimeline(canvasId, timelineData) {
-  const canvas = document.getElementById(canvasId);
-  if (!canvas) return null;
-  
-  const datasets = timelineData.map((med, index) => {
-    const startDate = new Date(med.start);
-    const endDate = new Date(med.end);
-    
-    return {
-      label: `${med.name} (${med.dose})`,
-      data: [
-        { x: startDate, y: index },
-        { x: endDate, y: index }
-      ],
-      borderColor: med.active ? 'rgb(76, 175, 80)' : 'rgb(158, 158, 158)',
-      backgroundColor: med.active ? 'rgba(76, 175, 80, 0.2)' : 'rgba(158, 158, 158, 0.2)',
-      borderWidth: 3,
-      showLine: true
-    };
-  });
-  
-  const ctx = canvas.getContext('2d');
-  return new Chart(ctx, {
-    type: 'line',
-    data: { datasets: datasets },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        x: {
-          type: 'time',
-          time: {
-            unit: 'month'
-          },
-          title: {
-            display: true,
-            text: 'Date'
-          }
-        },
-        y: {
-          display: false
-        }
-      }
-    }
-  });
-}

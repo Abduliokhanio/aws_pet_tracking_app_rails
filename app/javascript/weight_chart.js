@@ -1,8 +1,3 @@
-import { Chart, registerables } from 'chart.js';
-
-// Register Chart.js components
-Chart.register(...registerables);
-
 // Initialize weight chart when DOM is loaded
 document.addEventListener('turbo:load', () => {
   const chartCanvas = document.getElementById('weightChart');
@@ -10,13 +5,28 @@ document.addEventListener('turbo:load', () => {
   if (!chartCanvas) return;
   
   // Get data from data attributes
-  const chartData = JSON.parse(chartCanvas.dataset.chartData || '{}');
-  
-  if (!chartData.labels || chartData.labels.length === 0) {
+  const chartDataStr = chartCanvas.dataset.chartData;
+  if (!chartDataStr) {
+    console.log('No chart data found');
     return;
   }
   
-  // Create the chart
+  let chartData;
+  try {
+    chartData = JSON.parse(chartDataStr);
+  } catch (e) {
+    console.error('Error parsing chart data:', e);
+    return;
+  }
+  
+  if (!chartData.labels || chartData.labels.length === 0) {
+    console.log('No labels in chart data');
+    return;
+  }
+  
+  console.log('Creating chart with data:', chartData);
+  
+  // Create the chart using global Chart object from CDN
   const ctx = chartCanvas.getContext('2d');
   new Chart(ctx, {
     type: 'line',
@@ -27,15 +37,27 @@ document.addEventListener('turbo:load', () => {
       plugins: {
         legend: {
           display: true,
-          position: 'top'
+          position: 'top',
+          labels: {
+            color: '#00d4ff'
+          }
         },
         title: {
           display: true,
-          text: 'Weight Trend Over Time'
+          text: 'Weight Trend Over Time',
+          color: '#00d4ff',
+          font: {
+            size: 16
+          }
         },
         tooltip: {
           mode: 'index',
-          intersect: false
+          intersect: false,
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          titleColor: '#00d4ff',
+          bodyColor: '#e0e0e0',
+          borderColor: '#00d4ff',
+          borderWidth: 1
         }
       },
       scales: {
@@ -43,22 +65,32 @@ document.addEventListener('turbo:load', () => {
           beginAtZero: false,
           title: {
             display: true,
-            text: 'Weight (lbs)'
+            text: 'Weight (lbs)',
+            color: '#00d4ff'
           },
           ticks: {
+            color: '#e0e0e0',
             callback: function(value) {
               return value.toFixed(2) + ' lbs';
             }
+          },
+          grid: {
+            color: 'rgba(0, 212, 255, 0.1)'
           }
         },
         x: {
           title: {
             display: true,
-            text: 'Date'
+            text: 'Date',
+            color: '#00d4ff'
           },
           ticks: {
+            color: '#e0e0e0',
             maxRotation: 45,
             minRotation: 45
+          },
+          grid: {
+            color: 'rgba(0, 212, 255, 0.1)'
           }
         }
       },
@@ -70,44 +102,3 @@ document.addEventListener('turbo:load', () => {
     }
   });
 });
-
-// Export for use in other modules if needed
-export function initializeWeightChart(canvasId, data) {
-  const canvas = document.getElementById(canvasId);
-  if (!canvas) return null;
-  
-  const ctx = canvas.getContext('2d');
-  return new Chart(ctx, {
-    type: 'line',
-    data: data,
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          display: true,
-          position: 'top'
-        },
-        title: {
-          display: true,
-          text: 'Weight Trend Over Time'
-        }
-      },
-      scales: {
-        y: {
-          beginAtZero: false,
-          title: {
-            display: true,
-            text: 'Weight (lbs)'
-          }
-        },
-        x: {
-          title: {
-            display: true,
-            text: 'Date'
-          }
-        }
-      }
-    }
-  });
-}

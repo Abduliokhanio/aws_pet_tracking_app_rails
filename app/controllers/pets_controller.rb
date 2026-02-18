@@ -9,6 +9,7 @@ class PetsController < ApplicationController
 
   # GET /pets/1 or /pets/1.json
   def show
+    @pets = @user.pets
   end
 
   # GET /pets/1/dashboard

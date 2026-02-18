@@ -69,11 +69,95 @@
 
 <% if @medications.any? %>
   <div class="card">
-    <h2>Medication Timeline</h2>
+    <h2>Medication Overview</h2>
     <div style="position: relative; height: 300px;">
-      <canvas id="medicationTimelineChart" data-timeline-data="<%= @timeline_data.to_json %>"></canvas>
+      <canvas id="medicationTimelineChart"></canvas>
     </div>
   </div>
+  
+  <script>
+    document.addEventListener('turbo:load', () => {
+      const canvas = document.getElementById('medicationTimelineChart');
+      if (!canvas) return;
+      
+      const timelineData = <%= raw @timeline_data.to_json %>;
+      if (!timelineData || timelineData.length === 0) return;
+      
+      const ctx = canvas.getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: timelineData.map(med => med.name),
+          datasets: [{
+            label: 'Days on Medication',
+            data: timelineData.map(med => {
+              const start = new Date(med.start);
+              const end = new Date(med.end);
+              return Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+            }),
+            backgroundColor: timelineData.map(med => 
+              med.active ? 'rgba(0, 212, 255, 0.6)' : 'rgba(128, 128, 128, 0.4)'
+            ),
+            borderColor: '#00d4ff',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            },
+            title: {
+              display: true,
+              text: 'Medication Duration',
+              color: '#00d4ff',
+              font: { size: 16 }
+            },
+            tooltip: {
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              titleColor: '#00d4ff',
+              bodyColor: '#e0e0e0',
+              borderColor: '#00d4ff',
+              borderWidth: 1,
+              callbacks: {
+                label: function(context) {
+                  const med = timelineData[context.dataIndex];
+                  return [
+                    `Dose: ${med.dose}`,
+                    `Start: ${med.start}`,
+                    `End: ${med.end}`,
+                    `Status: ${med.active ? 'Active' : 'Inactive'}`
+                  ];
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Days',
+                color: '#00d4ff'
+              },
+              ticks: { color: '#e0e0e0' },
+              grid: { color: 'rgba(0, 212, 255, 0.1)' }
+            },
+            x: {
+              ticks: { 
+                color: '#e0e0e0',
+                maxRotation: 45,
+                minRotation: 45
+              },
+              grid: { color: 'rgba(0, 212, 255, 0.1)' }
+            }
+          }
+        }
+      });
+    });
+  </script>
 <% end %>
 
 <h2>Active Medications</h2>

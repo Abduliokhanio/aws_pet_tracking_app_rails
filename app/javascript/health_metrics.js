@@ -1,211 +1,132 @@
-import { Chart, registerables } from 'chart.js';
-
-// Register Chart.js components
-Chart.register(...registerables);
-
 // Initialize health metrics charts when DOM is loaded
 document.addEventListener('turbo:load', () => {
-  initializeMoodChart();
-  initializeActivityChart();
-  initializeFoodIntakeChart();
-});
-
-function initializeMoodChart() {
-  const chartCanvas = document.getElementById('moodChart');
-  
-  if (!chartCanvas) return;
-  
-  const metricsData = JSON.parse(chartCanvas.dataset.metricsData || '{}');
-  const moodData = metricsData.mood || {};
-  
-  if (Object.keys(moodData).length === 0) {
-    return;
-  }
-  
-  const ctx = chartCanvas.getContext('2d');
-  new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: Object.keys(moodData).map(key => capitalizeFirst(key)),
-      datasets: [{
-        label: 'Mood Distribution',
-        data: Object.values(moodData),
-        backgroundColor: [
-          'rgba(255, 206, 86, 0.8)',
-          'rgba(75, 192, 192, 0.8)',
-          'rgba(54, 162, 235, 0.8)',
-          'rgba(153, 102, 255, 0.8)',
-          'rgba(255, 99, 132, 0.8)'
-        ],
-        borderColor: [
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 99, 132, 1)'
-        ],
-        borderWidth: 2
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          display: true,
-          position: 'right'
+  // Mood Chart
+  const moodCanvas = document.getElementById('moodChart');
+  if (moodCanvas) {
+    const metricsData = JSON.parse(moodCanvas.dataset.metricsData || '{}');
+    if (metricsData.mood) {
+      const ctx = moodCanvas.getContext('2d');
+      new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: Object.keys(metricsData.mood),
+          datasets: [{
+            data: Object.values(metricsData.mood),
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.8)',
+              'rgba(54, 162, 235, 0.8)',
+              'rgba(255, 206, 86, 0.8)',
+              'rgba(75, 192, 192, 0.8)',
+              'rgba(153, 102, 255, 0.8)'
+            ],
+            borderColor: '#00d4ff',
+            borderWidth: 2
+          }]
         },
-        title: {
-          display: true,
-          text: 'Mood Distribution',
-          font: {
-            size: 16
-          }
-        },
-        tooltip: {
-          callbacks: {
-            label: function(context) {
-              const label = context.label || '';
-              const value = context.parsed || 0;
-              const total = context.dataset.data.reduce((a, b) => a + b, 0);
-              const percentage = ((value / total) * 100).toFixed(1);
-              return `${label}: ${value} (${percentage}%)`;
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { color: '#00d4ff' }
+            },
+            title: {
+              display: true,
+              text: 'Mood Distribution',
+              color: '#00d4ff'
             }
           }
         }
-      }
+      });
     }
-  });
-}
-
-function initializeActivityChart() {
-  const chartCanvas = document.getElementById('activityChart');
-  
-  if (!chartCanvas) return;
-  
-  const metricsData = JSON.parse(chartCanvas.dataset.metricsData || '{}');
-  const activityData = metricsData.activity_level || {};
-  
-  if (Object.keys(activityData).length === 0) {
-    return;
   }
-  
-  const ctx = chartCanvas.getContext('2d');
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: Object.keys(activityData).map(key => capitalizeFirst(key.replace('_', ' '))),
-      datasets: [{
-        label: 'Activity Level',
-        data: Object.values(activityData),
-        backgroundColor: 'rgba(54, 162, 235, 0.8)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 2
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          display: false
-        },
-        title: {
-          display: true,
-          text: 'Activity Level Distribution',
-          font: {
-            size: 16
-          }
-        }
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: {
-            stepSize: 1
-          },
-          title: {
-            display: true,
-            text: 'Number of Records'
-          }
-        },
-        x: {
-          title: {
-            display: true,
-            text: 'Activity Level'
-          }
-        }
-      }
-    }
-  });
-}
 
-function initializeFoodIntakeChart() {
-  const chartCanvas = document.getElementById('foodIntakeChart');
-  
-  if (!chartCanvas) return;
-  
-  const metricsData = JSON.parse(chartCanvas.dataset.metricsData || '{}');
-  const foodData = metricsData.food_intake || {};
-  
-  if (Object.keys(foodData).length === 0) {
-    return;
+  // Activity Chart
+  const activityCanvas = document.getElementById('activityChart');
+  if (activityCanvas) {
+    const metricsData = JSON.parse(activityCanvas.dataset.metricsData || '{}');
+    if (metricsData.activity_level) {
+      const ctx = activityCanvas.getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: Object.keys(metricsData.activity_level),
+          datasets: [{
+            label: 'Activity Level',
+            data: Object.values(metricsData.activity_level),
+            backgroundColor: 'rgba(0, 212, 255, 0.6)',
+            borderColor: '#00d4ff',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: { color: '#00d4ff' }
+            },
+            title: {
+              display: true,
+              text: 'Activity Level',
+              color: '#00d4ff'
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { color: '#e0e0e0' },
+              grid: { color: 'rgba(0, 212, 255, 0.1)' }
+            },
+            x: {
+              ticks: { color: '#e0e0e0' },
+              grid: { color: 'rgba(0, 212, 255, 0.1)' }
+            }
+          }
+        }
+      });
+    }
   }
-  
-  const ctx = chartCanvas.getContext('2d');
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: Object.keys(foodData).map(key => capitalizeFirst(key.replace('_', ' '))),
-      datasets: [{
-        label: 'Food Intake',
-        data: Object.values(foodData),
-        backgroundColor: 'rgba(75, 192, 192, 0.8)',
-        borderColor: 'rgba(75, 192, 192, 1)',
-        borderWidth: 2
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          display: false
+
+  // Food Intake Chart
+  const foodCanvas = document.getElementById('foodIntakeChart');
+  if (foodCanvas) {
+    const metricsData = JSON.parse(foodCanvas.dataset.metricsData || '{}');
+    if (metricsData.food_intake) {
+      const ctx = foodCanvas.getContext('2d');
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: Object.keys(metricsData.food_intake),
+          datasets: [{
+            data: Object.values(metricsData.food_intake),
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.8)',
+              'rgba(54, 162, 235, 0.8)',
+              'rgba(255, 206, 86, 0.8)',
+              'rgba(75, 192, 192, 0.8)'
+            ],
+            borderColor: '#00d4ff',
+            borderWidth: 2
+          }]
         },
-        title: {
-          display: true,
-          text: 'Food Intake Distribution',
-          font: {
-            size: 16
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { color: '#00d4ff' }
+            },
+            title: {
+              display: true,
+              text: 'Food Intake',
+              color: '#00d4ff'
+            }
           }
         }
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: {
-            stepSize: 1
-          },
-          title: {
-            display: true,
-            text: 'Number of Records'
-          }
-        },
-        x: {
-          title: {
-            display: true,
-            text: 'Food Intake Level'
-          }
-        }
-      }
+      });
     }
-  });
-}
-
-// Helper function to capitalize first letter
-function capitalizeFirst(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-// Export for use in other modules if needed
-export { initializeMoodChart, initializeActivityChart, initializeFoodIntakeChart };
+  }
+});
