@@ -97,7 +97,8 @@ class VeterinariTest < ActiveSupport::TestCase
         guard rating_ids.include?(rating.id)
       end
       
-      # Clean up
+      # Clean up - destroy ratings first, then users, then vet
+      created_ratings.each(&:destroy)
       created_ratings.each { |r| r.user.destroy }
       vet.destroy
     end
@@ -207,7 +208,8 @@ class VeterinariTest < ActiveSupport::TestCase
         guard Rating.exists?(rating_id)
       end
       
-      # Clean up
+      # Clean up - destroy ratings first, then users, then vet
+      created_ratings.each(&:destroy)
       created_ratings.each { |r| r.user.destroy }
       vet.destroy
     end
@@ -264,7 +266,8 @@ class VeterinariTest < ActiveSupport::TestCase
         guard rating.veterinarian_id == vet.id
       end
       
-      # Clean up
+      # Clean up - destroy ratings first, then users, then vet
+      created_ratings.each(&:destroy)
       created_users.each(&:destroy)
       vet.destroy
     end

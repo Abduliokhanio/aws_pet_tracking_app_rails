@@ -182,15 +182,15 @@ This implementation plan breaks down the Pet Health Management System into incre
     - Add complete! instance method
     - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5, 9.6_
   
-  - [x] 8.2 Write property tests for reminder model (Properties 40-45)
+  - [ ] 8.2 Write property tests for reminder model (Properties 40-45)
     - Test reminder required fields, validation, status detection, and grouping
     - **Validates: Requirements 9.1, 9.2, 9.3, 9.4, 9.5, 9.6**
 
-- [~] 9. Checkpoint - Ensure all model tests pass
+- [x] 9. Checkpoint - Ensure all model tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 10. Implement HealthAlertService
-  - [~] 10.1 Create HealthAlertService class
+  - [ ] 10.1 Create HealthAlertService class
     - Add initialize method accepting health_record
     - Add check_and_alert public method
     - Add private methods: check_weight_threshold, check_activity_level, check_declining_trends
@@ -200,18 +200,18 @@ This implementation plan breaks down the Pet Health Management System into incre
     - Include error handling with logging
     - _Requirements: 2.1, 2.2, 2.5_
   
-  - [~] 10.2 Add after_create callback to HealthRecord
+  - [ ] 10.2 Add after_create callback to HealthRecord
     - Call HealthAlertService.new(self).check_and_alert
     - _Requirements: 2.1, 2.2, 2.5_
   
-  - [~] 10.3 Write property tests for health alert service (Properties 7-9)
+  - [ ] 10.3 Write property tests for health alert service (Properties 7-9)
     - Test low weight alert generation
     - Test low activity alert generation
     - Test declining trend detection
     - **Validates: Requirements 2.1, 2.2, 2.5**
 
 - [ ] 11. Implement VisualizationService
-  - [~] 11.1 Create VisualizationService class
+  - [ ] 11.1 Create VisualizationService class
     - Add initialize method accepting pet, start_date, end_date
     - Add weight_chart_data method returning chart.js compatible data
     - Add medication_timeline_data method returning timeline data
@@ -219,7 +219,7 @@ This implementation plan breaks down the Pet Health Management System into incre
     - Add private method: aggregate_by_category
     - _Requirements: 12.1, 12.2, 12.3, 12.5_
   
-  - [~] 11.2 Write property tests for visualization service (Properties 54-57)
+  - [ ] 11.2 Write property tests for visualization service (Properties 54-57)
     - Test weight chart data structure
     - Test medication timeline data structure
     - Test date filtering
@@ -227,17 +227,17 @@ This implementation plan breaks down the Pet Health Management System into incre
     - **Validates: Requirements 12.1, 12.2, 12.3, 12.5**
 
 - [ ] 12. Implement ReminderService
-  - [~] 12.1 Create ReminderService class
+  - [ ] 12.1 Create ReminderService class
     - Add class method: create_from_health_alert(pet, alert_context)
     - Add class method: mark_due_reminders
     - _Requirements: 10.1, 10.2, 9.2_
   
-  - [~] 12.2 Write property tests for reminder service (Property 46)
+  - [ ] 12.2 Write property tests for reminder service (Property 46)
     - Test alert context transfer to reminders
     - **Validates: Requirements 10.2**
 
 - [ ] 13. Implement HealthRecordsController
-  - [~] 13.1 Create HealthRecordsController with CRUD actions
+  - [ ] 13.1 Create HealthRecordsController with CRUD actions
     - Add before_action :set_pet
     - Add before_action :set_health_record for show, edit, update, destroy
     - Implement index action with pagination and visualization data
@@ -246,12 +246,12 @@ This implementation plan breaks down the Pet Health Management System into incre
     - Add private method: health_record_params
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5_
   
-  - [~] 13.2 Add routes for health records
+  - [ ] 13.2 Add routes for health records
     - Add nested routes under pets: resources :health_records
     - _Requirements: 1.1_
 
 - [ ] 14. Implement MedicationsController
-  - [~] 14.1 Create MedicationsController with CRUD actions
+  - [ ] 14.1 Create MedicationsController with CRUD actions
     - Add before_action :set_pet
     - Add before_action :set_medication for show, edit, update, destroy
     - Implement index action with active/inactive filtering
@@ -259,12 +259,12 @@ This implementation plan breaks down the Pet Health Management System into incre
     - Add private method: medication_params
     - _Requirements: 3.1, 3.2, 3.3_
   
-  - [~] 14.2 Add routes for medications
+  - [ ] 14.2 Add routes for medications
     - Add nested routes under pets: resources :medications
     - _Requirements: 3.1_
 
 - [ ] 15. Implement VetOfficesController
-  - [~] 15.1 Create VetOfficesController with CRUD actions
+  - [ ] 15.1 Create VetOfficesController with CRUD actions
     - Implement index action with location filtering
     - Implement show action displaying address, contacts, and veterinarians
     - Implement create action with nested attributes for address and contacts
@@ -272,35 +272,35 @@ This implementation plan breaks down the Pet Health Management System into incre
     - Add private method: vet_office_params (permit nested attributes)
     - _Requirements: 6.1, 6.2, 6.5_
   
-  - [~] 15.2 Add routes for vet offices
+  - [ ] 15.2 Add routes for vet offices
     - Add resources :vet_offices
     - _Requirements: 6.1_
 
 - [ ] 16. Implement VeterinariansController
-  - [~] 16.1 Create VeterinariansController with CRUD actions
+  - [ ] 16.1 Create VeterinariansController with CRUD actions
     - Implement index and show actions displaying ratings
     - Implement create, update, destroy actions
     - Add private method: veterinarian_params
     - _Requirements: 4.1, 4.2, 4.4_
   
-  - [~] 16.2 Add routes for veterinarians
+  - [ ] 16.2 Add routes for veterinarians
     - Add resources :veterinarians
     - _Requirements: 4.1_
 
 - [ ] 17. Implement RatingsController
-  - [~] 17.1 Create RatingsController with create and update actions
+  - [ ] 17.1 Create RatingsController with create and update actions
     - Add before_action :set_veterinarian
     - Implement create action with uniqueness handling
     - Implement update action for existing ratings
     - Add private method: rating_params
     - _Requirements: 5.1, 5.4, 5.5_
   
-  - [~] 17.2 Add routes for ratings
+  - [ ] 17.2 Add routes for ratings
     - Add nested routes under veterinarians: resources :ratings, only: [:create, :update]
     - _Requirements: 5.1_
 
 - [ ] 18. Implement RemindersController
-  - [~] 18.1 Create RemindersController with CRUD actions
+  - [ ] 18.1 Create RemindersController with CRUD actions
     - Add before_action :set_pet
     - Add before_action :set_reminder for show, edit, update, destroy
     - Implement index action with upcoming/due/completed filtering
@@ -309,60 +309,60 @@ This implementation plan breaks down the Pet Health Management System into incre
     - Add private method: reminder_params
     - _Requirements: 9.1, 9.3, 9.5_
   
-  - [~] 18.2 Add routes for reminders
+  - [ ] 18.2 Add routes for reminders
     - Add nested routes under pets: resources :reminders
     - Add member route: post :complete
     - _Requirements: 9.1_
 
-- [~] 19. Checkpoint - Ensure all controller tests pass
+- [ ] 19. Checkpoint - Ensure all controller tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 20. Create views for health records
-  - [~] 20.1 Create health records index view
+  - [ ] 20.1 Create health records index view
     - Display health records table with pagination
     - Include weight chart visualization using Chart.js
     - Add link to create new health record
     - _Requirements: 1.4, 12.1_
   
-  - [~] 20.2 Create health records form partial
+  - [ ] 20.2 Create health records form partial
     - Include fields for all health record attributes
     - Add medication dropdown (optional association)
     - Include date picker for recorded_on
     - _Requirements: 1.1, 1.2, 1.3_
   
-  - [~] 20.3 Create health records show view
+  - [ ] 20.3 Create health records show view
     - Display all health record details
     - Show associated medication if present
     - Include edit and delete links
     - _Requirements: 1.1, 1.2, 1.3_
 
 - [ ] 21. Create views for medications
-  - [~] 21.1 Create medications index view
+  - [ ] 21.1 Create medications index view
     - Display active medications section
     - Display inactive medications section
     - Include medication timeline visualization
     - Add link to create new medication
     - _Requirements: 3.2, 12.2_
   
-  - [~] 21.2 Create medications form partial
+  - [ ] 21.2 Create medications form partial
     - Include fields for medication_name, dose, start_date, end_date, notes
     - Add date pickers for dates
     - _Requirements: 3.1_
 
 - [ ] 22. Create views for vet offices and veterinarians
-  - [~] 22.1 Create vet offices index view
+  - [ ] 22.1 Create vet offices index view
     - Display vet offices with location filtering
     - Show address and primary contacts for each office
     - Add link to create new vet office
     - _Requirements: 6.2, 6.5_
   
-  - [~] 22.2 Create vet office form with nested attributes
+  - [ ] 22.2 Create vet office form with nested attributes
     - Include fields for office name
     - Include nested form for address (city, state, zipcode, country)
     - Include nested form for contacts (type, value, is_primary)
     - _Requirements: 6.1, 7.1, 8.1_
   
-  - [~] 22.3 Create veterinarians show view
+  - [ ] 22.3 Create veterinarians show view
     - Display veterinarian details
     - Show average rating and total ratings
     - Display all reviews
@@ -370,134 +370,134 @@ This implementation plan breaks down the Pet Health Management System into incre
     - _Requirements: 4.2, 5.2_
 
 - [ ] 23. Create views for reminders
-  - [~] 23.1 Create reminders index view
+  - [ ] 23.1 Create reminders index view
     - Display upcoming reminders section
     - Display due reminders section (highlighted)
     - Display completed reminders section
     - Add link to create new reminder
     - _Requirements: 9.5_
   
-  - [~] 23.2 Create reminder form partial
+  - [ ] 23.2 Create reminder form partial
     - Include fields for reminder_type, scheduled_date, title, description
     - Add date picker for scheduled_date
     - Add dropdown for reminder_type
     - _Requirements: 9.1, 9.4_
 
 - [ ] 24. Add JavaScript for visualizations
-  - [~] 24.1 Install Chart.js via importmap or npm
+  - [ ] 24.1 Install Chart.js via importmap or npm
     - Add Chart.js to asset pipeline
     - _Requirements: 12.1_
   
-  - [~] 24.2 Create weight chart JavaScript
+  - [ ] 24.2 Create weight chart JavaScript
     - Fetch visualization data from controller
     - Render line chart for weight over time
     - Add date range filtering controls
     - _Requirements: 12.1, 12.3_
   
-  - [~] 24.3 Create medication timeline JavaScript
+  - [ ] 24.3 Create medication timeline JavaScript
     - Fetch timeline data from controller
     - Render timeline visualization
     - Show medication periods and dosages
     - _Requirements: 12.2_
   
-  - [~] 24.4 Create health metrics charts
+  - [ ] 24.4 Create health metrics charts
     - Render charts for mood, activity level, food intake
     - Use appropriate chart types (bar, pie)
     - _Requirements: 12.5_
 
 - [ ] 25. Implement data integrity and cascade deletion
-  - [~] 25.1 Update Pet model with cascade deletions
+  - [ ] 25.1 Update Pet model with cascade deletions
     - Add has_many :health_records, dependent: :destroy
     - Add has_many :medications, dependent: :destroy
     - Add has_many :reminders, dependent: :destroy
     - _Requirements: 11.1_
   
-  - [~] 25.2 Update User model with cascade deletions
+  - [ ] 25.2 Update User model with cascade deletions
     - Verify has_many :pets, dependent: :destroy exists
     - _Requirements: 11.2_
   
-  - [~] 25.3 Write property tests for cascade deletions (Properties 48-50)
+  - [ ] 25.3 Write property tests for cascade deletions (Properties 48-50)
     - Test pet deletion cascade
     - Test user deletion cascade
     - Test vet office deletion cascade
     - **Validates: Requirements 11.1, 11.2, 11.3**
   
-  - [~] 25.4 Write property test for veterinarian deletion restriction (Property 51)
+  - [ ] 25.4 Write property test for veterinarian deletion restriction (Property 51)
     - **Property 51: Veterinarian deletion restriction**
     - **Validates: Requirements 11.4**
 
 - [ ] 26. Implement historical data export
-  - [~] 26.1 Add export action to HealthRecordsController
+  - [ ] 26.1 Add export action to HealthRecordsController
     - Implement export method generating PDF or CSV
     - Include date range filtering
     - Format data for printing
     - _Requirements: 13.4_
   
-  - [~] 26.2 Add export action to MedicationsController
+  - [ ] 26.2 Add export action to MedicationsController
     - Implement export method for medication history
     - Include duration and dosage information
     - _Requirements: 13.3_
   
-  - [~] 26.3 Add export buttons to views
+  - [ ] 26.3 Add export buttons to views
     - Add export links to health records index
     - Add export links to medications index
     - _Requirements: 12.6, 13.4_
 
 - [ ] 27. Add custom threshold configuration
-  - [~] 27.1 Create pet_health_thresholds table migration
+  - [ ] 27.1 Create pet_health_thresholds table migration
     - Add table with pet_id, threshold_type, threshold_value, timestamps
     - Add foreign key constraint
     - _Requirements: 2.4_
   
-  - [~] 27.2 Create PetHealthThreshold model
+  - [ ] 27.2 Create PetHealthThreshold model
     - Add belongs_to :pet association
     - Add validations for threshold_type and threshold_value
     - _Requirements: 2.4_
   
-  - [~] 27.3 Update HealthAlertService to use custom thresholds
+  - [ ] 27.3 Update HealthAlertService to use custom thresholds
     - Check for custom thresholds before using defaults
     - _Requirements: 2.4_
   
-  - [~] 27.4 Write property tests for custom thresholds (Properties 10, 47)
+  - [ ] 27.4 Write property tests for custom thresholds (Properties 10, 47)
     - Test threshold persistence and retrieval
     - Test alert sensitivity configuration
     - **Validates: Requirements 2.4, 10.4**
 
 - [ ] 28. Implement alert dismissal functionality
-  - [~] 28.1 Create dismissed_alerts table migration
+  - [ ] 28.1 Create dismissed_alerts table migration
     - Add table with pet_id, alert_type, alert_condition, dismissed_at, timestamps
     - Add foreign key constraint
     - _Requirements: 10.3_
   
-  - [~] 28.2 Create DismissedAlert model
+  - [ ] 28.2 Create DismissedAlert model
     - Add belongs_to :pet association
     - Add validations
     - _Requirements: 10.3_
   
-  - [~] 28.3 Update HealthAlertService to check dismissed alerts
+  - [ ] 28.3 Update HealthAlertService to check dismissed alerts
     - Skip alert generation for dismissed conditions
     - _Requirements: 10.3_
   
-  - [~] 28.4 Write property test for alert dismissal (Property 11)
+  - [ ] 28.4 Write property test for alert dismissal (Property 11)
     - **Property 11: Alert dismissal prevents repetition**
     - **Validates: Requirements 10.3**
 
-- [~] 29. Final checkpoint - Run full test suite
+- [ ] 29. Final checkpoint - Run full test suite
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 30. Integration and final wiring
-  - [~] 30.1 Add navigation links to main layout
+  - [ ] 30.1 Add navigation links to main layout
     - Add links to health records, medications, vet offices, reminders
     - _Requirements: All_
   
-  - [~] 30.2 Add dashboard view for pet health overview
+  - [ ] 30.2 Add dashboard view for pet health overview
     - Display recent health records
     - Show upcoming reminders
     - Display active medications
     - Include quick links to all features
     - _Requirements: All_
   
-  - [~] 30.3 Verify all routes and associations
+  - [ ] 30.3 Verify all routes and associations
     - Test navigation between all pages
     - Verify all links work correctly
     - _Requirements: All_

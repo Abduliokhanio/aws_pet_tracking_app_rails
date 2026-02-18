@@ -103,7 +103,8 @@ class RatingTest < ActiveSupport::TestCase
       # Verify it's rounded to 2 decimal places
       guard actual_average.to_s.split('.').last.length <= 2
       
-      # Clean up
+      # Clean up - destroy ratings first, then users, then vet
+      vet.ratings.destroy_all
       created_users.each(&:destroy)
       vet.destroy
     end
@@ -249,7 +250,8 @@ class RatingTest < ActiveSupport::TestCase
       guard another_rating.persisted?
       guard vet.ratings.count == 2
       
-      # Clean up
+      # Clean up - destroy ratings first, then users, then vet
+      Rating.where(veterinarian: vet).destroy_all
       another_user.destroy
       user.destroy
       vet.destroy
