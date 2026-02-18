@@ -1,0 +1,58 @@
+<div id="<%= dom_id health_record %>">
+  <div>
+    <strong>Recorded On:</strong>
+    <%= health_record.recorded_on.strftime("%B %d, %Y") %>
+  </div>
+
+  <% if health_record.weight.present? %>
+    <div>
+      <strong>Weight:</strong>
+      <%= health_record.weight %> lbs
+    </div>
+  <% end %>
+
+  <% if health_record.status.present? %>
+    <div>
+      <strong>Status:</strong>
+      <%= health_record.status.titleize %>
+    </div>
+  <% end %>
+
+  <% if health_record.mood.present? %>
+    <div>
+      <strong>Mood:</strong>
+      <%= health_record.mood.titleize %>
+    </div>
+  <% end %>
+
+  <% if health_record.activity_level.present? %>
+    <div>
+      <strong>Activity Level:</strong>
+      <%= health_record.activity_level.titleize %>
+    </div>
+  <% end %>
+
+  <% if health_record.food_intake.present? %>
+    <div>
+      <strong>Food Intake:</strong>
+      <%= health_record.food_intake.titleize %>
+    </div>
+  <% end %>
+
+  <% if health_record.medication_name.present? %>
+    <div>
+      <strong>Medication:</strong>
+      <%= health_record.medication_name %> 
+      <% if health_record.medication_dose.present? %>
+        (<%= health_record.medication_dose %>)
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if health_record.notes.present? %>
+    <div>
+      <strong>Notes:</strong>
+      <%= health_record.notes %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,25 @@
+<div id="<%= dom_id veterinarian %>">
+  <div>
+    <strong>Name:</strong>
+    <%= veterinarian.name %>
+  </div>
+
+  <% if veterinarian.years_of_experience.present? %>
+    <div>
+      <strong>Experience:</strong>
+      <%= veterinarian.years_of_experience %> years
+    </div>
+  <% end %>
+
+  <div>
+    <strong>Vet Office:</strong>
+    <%= veterinarian.vet_office.name %>
+  </div>
+
+  <% if veterinarian.total_ratings > 0 %>
+    <div>
+      <strong>Rating:</strong>
+      ⭐ <%= veterinarian.average_rating %> (<%= veterinarian.total_ratings %>)
+    </div>
+  <% end %>
+</div>

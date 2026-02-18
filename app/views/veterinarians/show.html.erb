@@ -1,0 +1,100 @@
+<p style="color: green"><%= notice %></p>
+
+<div class="show-container">
+  <h1><%= @veterinarian.name %></h1>
+  
+  <div class="card">
+    <% if @veterinarian.years_of_experience.present? %>
+      <div>
+        <strong>Years of Experience:</strong>
+        <%= @veterinarian.years_of_experience %>
+      </div>
+    <% end %>
+
+    <% if @veterinarian.work_history.present? %>
+      <div>
+        <strong>Work History:</strong>
+        <%= simple_format(@veterinarian.work_history) %>
+      </div>
+    <% end %>
+
+    <div>
+      <strong>Vet Office:</strong>
+      <%= link_to @veterinarian.vet_office.name, vet_office_path(@veterinarian.vet_office) %>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Rating Summary</h3>
+    <div style="font-size: 24px; margin: 10px 0;">
+      <% if @veterinarian.total_ratings > 0 %>
+        ⭐ <%= @veterinarian.average_rating %> / 5.0
+        <small>(<%= @veterinarian.total_ratings %> <%= 'rating'.pluralize(@veterinarian.total_ratings) %>)</small>
+      <% else %>
+        <small>No ratings yet</small>
+      <% end %>
+    </div>
+  </div>
+
+  <% if @veterinarian.ratings.any? %>
+    <div class="card">
+      <h3>Reviews</h3>
+      <% @veterinarian.ratings.order(created_at: :desc).each do |rating| %>
+        <div style="border-bottom: 1px solid #eee; padding: 15px 0;">
+          <div style="margin-bottom: 5px;">
+            <strong>Rating:</strong>
+            <span style="color: #FFD700;">
+              <%= '⭐' * rating.rating_value %>
+            </span>
+            (<%= rating.rating_value %>/5)
+          </div>
+          
+          <% if rating.review_text.present? %>
+            <div style="margin: 10px 0;">
+              <%= simple_format(rating.review_text) %>
+            </div>
+          <% end %>
+          
+          <div style="font-size: 12px; color: #666;">
+            By <%= rating.user.name %> on <%= rating.created_at.strftime("%B %d, %Y") %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if defined?(current_user) && current_user.present? %>
+    <div class="card">
+      <h3>Rate This Veterinarian</h3>
+      <% existing_rating = @veterinarian.ratings.find_by(user: current_user) %>
+      
+      <%= form_with(model: [existing_rating || @veterinarian.ratings.build], url: existing_rating ? veterinarian_rating_path(@veterinarian, existing_rating) : veterinarian_ratings_path(@veterinarian), method: existing_rating ? :patch : :post) do |form| %>
+        <div>
+          <%= form.label :rating_value, "Your Rating (1-5)", style: "display: block" %>
+          <%= form.select :rating_value, (1..5).to_a, { selected: existing_rating&.rating_value }, required: true %>
+        </div>
+
+        <div>
+          <%= form.label :review_text, "Your Review (optional)", style: "display: block" %>
+          <%= form.text_area :review_text, rows: 4, value: existing_rating&.review_text %>
+        </div>
+
+        <%= form.hidden_field :user_id, value: current_user.id %>
+
+        <div>
+          <%= form.submit existing_rating ? "Update Rating" : "Submit Rating" %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="card">
+      <p><em>Note: User authentication required to rate veterinarians. Rating form will appear when authentication is implemented.</em></p>
+    </div>
+  <% end %>
+
+  <div class="action-buttons">
+    <%= link_to "✏️ Edit", edit_veterinarian_path(@veterinarian), class: "btn-edit" %>
+    <%= link_to "🏥 Back to Vet Office", vet_office_path(@veterinarian.vet_office), class: "btn-back" %>
+    <%= button_to "🗑️ Delete", @veterinarian, method: :delete, class: "btn-delete", form: { data: { turbo_confirm: "Are you sure you want to delete this veterinarian?" } } %>
+  </div>
+</div>

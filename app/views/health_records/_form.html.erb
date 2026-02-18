@@ -1,0 +1,79 @@
+<%= form_with(model: [pet, health_record]) do |form| %>
+  <% if health_record.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(health_record.errors.count, "error") %> prohibited this health record from being saved:</h2>
+
+      <ul>
+        <% health_record.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :recorded_on, style: "display: block" %>
+    <%= form.date_field :recorded_on, value: health_record.recorded_on || Date.today %>
+  </div>
+
+  <div>
+    <%= form.label :weight, "Weight (lbs)", style: "display: block" %>
+    <%= form.number_field :weight, step: 0.01, min: 0 %>
+  </div>
+
+  <div>
+    <%= form.label :status, style: "display: block" %>
+    <%= form.select :status, options_for_select([
+      ['Excellent', 'excellent'],
+      ['Good', 'good'],
+      ['Fair', 'fair'],
+      ['Poor', 'poor'],
+      ['Critical', 'critical']
+    ], health_record.status), { include_blank: 'Select status' } %>
+  </div>
+
+  <div>
+    <%= form.label :mood, style: "display: block" %>
+    <%= form.text_field :mood, placeholder: "e.g., happy, calm, anxious" %>
+  </div>
+
+  <div>
+    <%= form.label :activity_level, style: "display: block" %>
+    <%= form.select :activity_level, options_for_select([
+      ['Very High', 'very_high'],
+      ['High', 'high'],
+      ['Normal', 'normal'],
+      ['Low', 'low'],
+      ['Very Low', 'very_low']
+    ], health_record.activity_level), { include_blank: 'Select activity level' } %>
+  </div>
+
+  <div>
+    <%= form.label :food_intake, style: "display: block" %>
+    <%= form.text_field :food_intake, placeholder: "e.g., normal, increased, decreased" %>
+  </div>
+
+  <div>
+    <%= form.label :medication_id, "Associated Medication (optional)", style: "display: block" %>
+    <%= form.collection_select :medication_id, pet.medications, :id, :medication_name, { include_blank: 'None' } %>
+  </div>
+
+  <div>
+    <%= form.label :medication_name, "Medication Name (if not in list)", style: "display: block" %>
+    <%= form.text_field :medication_name %>
+  </div>
+
+  <div>
+    <%= form.label :medication_dose, style: "display: block" %>
+    <%= form.text_field :medication_dose, placeholder: "e.g., 10mg twice daily" %>
+  </div>
+
+  <div>
+    <%= form.label :notes, style: "display: block" %>
+    <%= form.text_area :notes, rows: 4 %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,67 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Medications" %>
+
+<div class="page-header">
+  <h1>💊 Medications</h1>
+  <p class="page-subtitle">Medication tracking for <%= @pet.name %></p>
+</div>
+
+<% if @medications.any? %>
+  <div class="card">
+    <h2>Medication Timeline</h2>
+    <div id="medicationTimeline">
+      <% @medications.each do |medication| %>
+        <div style="padding: 10px; margin: 5px 0; border-left: 4px solid <%= medication.active? ? '#4CAF50' : '#999' %>; background: #f5f5f5;">
+          <strong><%= medication.medication_name %></strong> - <%= medication.dose %>
+          <br>
+          <small>
+            <%= medication.start_date.strftime("%b %d, %Y") %> 
+            <% if medication.end_date.present? %>
+              to <%= medication.end_date.strftime("%b %d, %Y") %>
+            <% else %>
+              (ongoing)
+            <% end %>
+          </small>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<h2>Active Medications</h2>
+<div id="active_medications">
+  <% @active_medications.each do |medication| %>
+    <div class="card">
+      <%= render medication %>
+      <div class="card-actions">
+        <%= link_to "View Details", pet_medication_path(@pet, medication), class: "btn-card" %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="empty-state" style="<%= 'display: none;' if @active_medications.any? %>">
+  <p>💊 No active medications.</p>
+</div>
+
+<h2>Inactive Medications</h2>
+<div id="inactive_medications">
+  <% @inactive_medications.each do |medication| %>
+    <div class="card" style="opacity: 0.7;">
+      <%= render medication %>
+      <div class="card-actions">
+        <%= link_to "View Details", pet_medication_path(@pet, medication), class: "btn-card" %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="empty-state" style="<%= 'display: none;' if @inactive_medications.any? %>">
+  <p>📋 No inactive medications.</p>
+</div>
+
+<div class="floating-action">
+  <%= link_to "➕ New Medication", new_pet_medication_path(@pet), class: "btn-floating" %>
+  <%= link_to "🐾 Back to Pet", pet_path(@pet), class: "btn-floating-secondary" %>
+</div>

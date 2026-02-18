@@ -1,0 +1,10 @@
+<h1>Edit Medication</h1>
+
+<%= render "form", pet: @pet, medication: @medication %>
+
+<br>
+
+<div>
+  <%= link_to "Show this medication", [@pet, @medication] %> |
+  <%= link_to "Back to Medications", pet_medications_path(@pet) %>
+</div>

@@ -1,0 +1,34 @@
+<div id="<%= dom_id vet_office %>">
+  <div>
+    <strong>Name:</strong>
+    <%= vet_office.name %>
+  </div>
+
+  <% if vet_office.address.present? %>
+    <div>
+      <strong>Address:</strong>
+      <%= vet_office.address.formatted %>
+    </div>
+  <% end %>
+
+  <% if vet_office.primary_phone.present? %>
+    <div>
+      <strong>Phone:</strong>
+      <%= vet_office.primary_phone.contact_value %>
+    </div>
+  <% end %>
+
+  <% if vet_office.primary_email.present? %>
+    <div>
+      <strong>Email:</strong>
+      <%= vet_office.primary_email.contact_value %>
+    </div>
+  <% end %>
+
+  <% if vet_office.veterinarians.any? %>
+    <div>
+      <strong>Veterinarians:</strong>
+      <%= vet_office.veterinarians.count %>
+    </div>
+  <% end %>
+</div>

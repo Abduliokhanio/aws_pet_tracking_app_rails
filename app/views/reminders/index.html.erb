@@ -1,0 +1,62 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Reminders" %>
+
+<div class="page-header">
+  <h1>🔔 Reminders</h1>
+  <p class="page-subtitle">Reminders for <%= @pet.name %></p>
+</div>
+
+<h2 style="color: #d32f2f;">Due Reminders</h2>
+<div id="due_reminders">
+  <% @due_reminders.each do |reminder| %>
+    <div class="card" style="border-left: 4px solid #d32f2f;">
+      <%= render reminder %>
+      <div class="card-actions">
+        <%= link_to "View Details", pet_reminder_path(@pet, reminder), class: "btn-card" %>
+        <%= button_to "✓ Complete", complete_pet_reminder_path(@pet, reminder), method: :post, class: "btn-card", style: "background: #4CAF50;" %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="empty-state" style="<%= 'display: none;' if @due_reminders.any? %>">
+  <p>✓ No due reminders!</p>
+</div>
+
+<h2 style="color: #1976d2;">Upcoming Reminders</h2>
+<div id="upcoming_reminders">
+  <% @upcoming_reminders.each do |reminder| %>
+    <div class="card" style="border-left: 4px solid #1976d2;">
+      <%= render reminder %>
+      <div class="card-actions">
+        <%= link_to "View Details", pet_reminder_path(@pet, reminder), class: "btn-card" %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="empty-state" style="<%= 'display: none;' if @upcoming_reminders.any? %>">
+  <p>📅 No upcoming reminders.</p>
+</div>
+
+<h2 style="color: #757575;">Completed Reminders</h2>
+<div id="completed_reminders">
+  <% @completed_reminders.each do |reminder| %>
+    <div class="card" style="opacity: 0.7; border-left: 4px solid #757575;">
+      <%= render reminder %>
+      <div class="card-actions">
+        <%= link_to "View Details", pet_reminder_path(@pet, reminder), class: "btn-card" %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="empty-state" style="<%= 'display: none;' if @completed_reminders.any? %>">
+  <p>📋 No completed reminders.</p>
+</div>
+
+<div class="floating-action">
+  <%= link_to "➕ New Reminder", new_pet_reminder_path(@pet), class: "btn-floating" %>
+  <%= link_to "🐾 Back to Pet", pet_path(@pet), class: "btn-floating-secondary" %>
+</div>

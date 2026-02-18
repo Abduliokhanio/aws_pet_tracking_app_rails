@@ -1,0 +1,27 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Veterinarians" %>
+
+<div class="page-header">
+  <h1>👨‍⚕️ Veterinarians</h1>
+  <p class="page-subtitle">Browse veterinarians</p>
+</div>
+
+<div id="veterinarians">
+  <% @veterinarians.each do |veterinarian| %>
+    <div class="card">
+      <%= render veterinarian %>
+      <div class="card-actions">
+        <%= link_to "View Details", veterinarian_path(veterinarian), class: "btn-card" %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="empty-state" style="<%= 'display: none;' if @veterinarians.any? %>">
+  <p>👨‍⚕️ No veterinarians yet.</p>
+</div>
+
+<div class="floating-action">
+  <%= link_to "➕ New Veterinarian", new_veterinarian_path, class: "btn-floating" %>
+</div>

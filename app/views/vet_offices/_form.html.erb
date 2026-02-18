@@ -1,0 +1,85 @@
+<%= form_with(model: vet_office) do |form| %>
+  <% if vet_office.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(vet_office.errors.count, "error") %> prohibited this vet office from being saved:</h2>
+
+      <ul>
+        <% vet_office.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name, "Office Name", style: "display: block" %>
+    <%= form.text_field :name, required: true %>
+  </div>
+
+  <fieldset style="border: 1px solid #ddd; padding: 15px; margin: 15px 0;">
+    <legend><strong>Address</strong></legend>
+    
+    <%= form.fields_for :address do |address_form| %>
+      <div>
+        <%= address_form.label :city, style: "display: block" %>
+        <%= address_form.text_field :city, required: true %>
+      </div>
+
+      <div>
+        <%= address_form.label :state, style: "display: block" %>
+        <%= address_form.text_field :state, required: true %>
+      </div>
+
+      <div>
+        <%= address_form.label :zipcode, style: "display: block" %>
+        <%= address_form.text_field :zipcode, required: true %>
+      </div>
+
+      <div>
+        <%= address_form.label :country, style: "display: block" %>
+        <%= address_form.text_field :country, required: true, value: address_form.object.country || 'US' %>
+      </div>
+    <% end %>
+  </fieldset>
+
+  <fieldset style="border: 1px solid #ddd; padding: 15px; margin: 15px 0;">
+    <legend><strong>Contact Information</strong></legend>
+    
+    <%= form.fields_for :contacts do |contact_form| %>
+      <div style="border: 1px solid #eee; padding: 10px; margin: 10px 0;">
+        <div>
+          <%= contact_form.label :contact_type, style: "display: block" %>
+          <%= contact_form.select :contact_type, options_for_select([
+            ['Phone', 'phone'],
+            ['Email', 'email']
+          ], contact_form.object.contact_type), { include_blank: 'Select type' }, required: true %>
+        </div>
+
+        <div>
+          <%= contact_form.label :contact_value, style: "display: block" %>
+          <%= contact_form.text_field :contact_value, required: true %>
+        </div>
+
+        <div>
+          <%= contact_form.label :is_primary, "Primary Contact" %>
+          <%= contact_form.check_box :is_primary %>
+        </div>
+
+        <% if contact_form.object.persisted? %>
+          <div>
+            <%= contact_form.label :_destroy, "Remove" %>
+            <%= contact_form.check_box :_destroy %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <div style="margin-top: 10px;">
+      <small>Note: Add contacts after creating the office, or use the form above for initial contacts.</small>
+    </div>
+  </fieldset>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

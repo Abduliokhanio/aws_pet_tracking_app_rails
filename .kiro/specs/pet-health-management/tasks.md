@@ -318,51 +318,51 @@ This implementation plan breaks down the Pet Health Management System into incre
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 20. Create views for health records
-  - [ ] 20.1 Create health records index view
+  - [x] 20.1 Create health records index view
     - Display health records table with pagination
     - Include weight chart visualization using Chart.js
     - Add link to create new health record
     - _Requirements: 1.4, 12.1_
   
-  - [ ] 20.2 Create health records form partial
+  - [x] 20.2 Create health records form partial
     - Include fields for all health record attributes
     - Add medication dropdown (optional association)
     - Include date picker for recorded_on
     - _Requirements: 1.1, 1.2, 1.3_
   
-  - [ ] 20.3 Create health records show view
+  - [x] 20.3 Create health records show view
     - Display all health record details
     - Show associated medication if present
     - Include edit and delete links
     - _Requirements: 1.1, 1.2, 1.3_
 
 - [ ] 21. Create views for medications
-  - [ ] 21.1 Create medications index view
+  - [x] 21.1 Create medications index view
     - Display active medications section
     - Display inactive medications section
     - Include medication timeline visualization
     - Add link to create new medication
     - _Requirements: 3.2, 12.2_
   
-  - [ ] 21.2 Create medications form partial
+  - [x] 21.2 Create medications form partial
     - Include fields for medication_name, dose, start_date, end_date, notes
     - Add date pickers for dates
     - _Requirements: 3.1_
 
 - [ ] 22. Create views for vet offices and veterinarians
-  - [ ] 22.1 Create vet offices index view
+  - [x] 22.1 Create vet offices index view
     - Display vet offices with location filtering
     - Show address and primary contacts for each office
     - Add link to create new vet office
     - _Requirements: 6.2, 6.5_
   
-  - [ ] 22.2 Create vet office form with nested attributes
+  - [x] 22.2 Create vet office form with nested attributes
     - Include fields for office name
     - Include nested form for address (city, state, zipcode, country)
     - Include nested form for contacts (type, value, is_primary)
     - _Requirements: 6.1, 7.1, 8.1_
   
-  - [ ] 22.3 Create veterinarians show view
+  - [x] 22.3 Create veterinarians show view
     - Display veterinarian details
     - Show average rating and total ratings
     - Display all reviews
@@ -370,14 +370,14 @@ This implementation plan breaks down the Pet Health Management System into incre
     - _Requirements: 4.2, 5.2_
 
 - [ ] 23. Create views for reminders
-  - [ ] 23.1 Create reminders index view
+  - [x] 23.1 Create reminders index view
     - Display upcoming reminders section
     - Display due reminders section (highlighted)
     - Display completed reminders section
     - Add link to create new reminder
     - _Requirements: 9.5_
   
-  - [ ] 23.2 Create reminder form partial
+  - [x] 23.2 Create reminder form partial
     - Include fields for reminder_type, scheduled_date, title, description
     - Add date picker for scheduled_date
     - Add dropdown for reminder_type

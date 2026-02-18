@@ -1,0 +1,10 @@
+<h1>Edit Health Record</h1>
+
+<%= render "form", pet: @pet, health_record: @health_record %>
+
+<br>
+
+<div>
+  <%= link_to "Show this health record", [@pet, @health_record] %> |
+  <%= link_to "Back to Health Records", pet_health_records_path(@pet) %>
+</div>

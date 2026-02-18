@@ -1,0 +1,64 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Health Records" %>
+
+<div class="page-header">
+  <h1>📊 Health Records</h1>
+  <p class="page-subtitle">Health tracking for <%= @pet.name %></p>
+</div>
+
+<% if @visualization_data.present? %>
+  <div class="card">
+    <h2>Weight Trend</h2>
+    <canvas id="weightChart" width="400" height="200"></canvas>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const ctx = document.getElementById('weightChart').getContext('2d');
+    const weightChart = new Chart(ctx, {
+      type: 'line',
+      data: <%= raw @visualization_data.to_json %>,
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: false,
+            title: {
+              display: true,
+              text: 'Weight (lbs)'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Date'
+            }
+          }
+        }
+      }
+    });
+  </script>
+<% end %>
+
+<div id="health_records">
+  <% @health_records.each do |health_record| %>
+    <div class="card">
+      <%= render health_record %>
+      <div class="card-actions">
+        <%= link_to "View Details", pet_health_record_path(@pet, health_record), class: "btn-card" %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="empty-state" style="<%= 'display: none;' if @health_records.any? %>">
+  <p>📝 No health records yet. Add the first health record!</p>
+</div>
+
+<%= paginate @health_records if @health_records.respond_to?(:current_page) %>
+
+<div class="floating-action">
+  <%= link_to "➕ New Health Record", new_pet_health_record_path(@pet), class: "btn-floating" %>
+  <%= link_to "🐾 Back to Pet", pet_path(@pet), class: "btn-floating-secondary" %>
+</div>

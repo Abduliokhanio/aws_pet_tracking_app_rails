@@ -1,0 +1,10 @@
+<h1>Edit Reminder</h1>
+
+<%= render "form", pet: @pet, reminder: @reminder %>
+
+<br>
+
+<div>
+  <%= link_to "Show this reminder", [@pet, @reminder] %> |
+  <%= link_to "Back to Reminders", pet_reminders_path(@pet) %>
+</div>

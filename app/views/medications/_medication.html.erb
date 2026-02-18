@@ -1,0 +1,37 @@
+<div id="<%= dom_id medication %>">
+  <div>
+    <strong>Medication Name:</strong>
+    <%= medication.medication_name %>
+  </div>
+
+  <div>
+    <strong>Dose:</strong>
+    <%= medication.dose %>
+  </div>
+
+  <div>
+    <strong>Start Date:</strong>
+    <%= medication.start_date.strftime("%B %d, %Y") %>
+  </div>
+
+  <% if medication.end_date.present? %>
+    <div>
+      <strong>End Date:</strong>
+      <%= medication.end_date.strftime("%B %d, %Y") %>
+    </div>
+  <% end %>
+
+  <div>
+    <strong>Status:</strong>
+    <span style="color: <%= medication.active? ? 'green' : 'gray' %>;">
+      <%= medication.active? ? '✓ Active' : '✗ Inactive' %>
+    </span>
+  </div>
+
+  <% if medication.notes.present? %>
+    <div>
+      <strong>Notes:</strong>
+      <%= medication.notes %>
+    </div>
+  <% end %>
+</div>

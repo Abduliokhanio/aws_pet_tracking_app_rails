@@ -4,6 +4,7 @@ class MedicationsController < ApplicationController
 
   # GET /pets/:pet_id/medications
   def index
+    @medications = @pet.medications.order(start_date: :desc)
     @active_medications = @pet.medications.active
     @inactive_medications = @pet.medications.inactive
   end

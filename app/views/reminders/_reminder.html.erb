@@ -1,0 +1,44 @@
+<div id="<%= dom_id reminder %>">
+  <div>
+    <strong>Title:</strong>
+    <%= reminder.title %>
+  </div>
+
+  <div>
+    <strong>Type:</strong>
+    <%= reminder.reminder_type.titleize %>
+  </div>
+
+  <div>
+    <strong>Scheduled Date:</strong>
+    <%= reminder.scheduled_date.strftime("%B %d, %Y") %>
+    <% if reminder.due? %>
+      <span style="color: #d32f2f; font-weight: bold;">⚠️ DUE</span>
+    <% end %>
+  </div>
+
+  <% if reminder.description.present? %>
+    <div>
+      <strong>Description:</strong>
+      <%= reminder.description %>
+    </div>
+  <% end %>
+
+  <% if reminder.completed_at.present? %>
+    <div>
+      <strong>Completed:</strong>
+      <%= reminder.completed_at.strftime("%B %d, %Y at %I:%M %p") %>
+    </div>
+  <% end %>
+
+  <div>
+    <strong>Status:</strong>
+    <% if reminder.completed_at.present? %>
+      <span style="color: #4CAF50;">✓ Completed</span>
+    <% elsif reminder.due? %>
+      <span style="color: #d32f2f;">⚠️ Due</span>
+    <% else %>
+      <span style="color: #1976d2;">📅 Upcoming</span>
+    <% end %>
+  </div>
+</div>
