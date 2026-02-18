@@ -136,12 +136,26 @@
 
 <script>
   document.addEventListener('turbo:load', () => {
+    console.log('Medication timeline script loading, Chart available:', typeof Chart !== 'undefined');
+    
     const canvas = document.getElementById('medicationUsageChart');
-    if (!canvas) return;
+    if (!canvas) {
+      console.log('Canvas not found');
+      return;
+    }
+    
+    console.log('Canvas found, checking Chart...');
+    
+    if (typeof Chart === 'undefined') {
+      console.error('Chart.js is not loaded!');
+      return;
+    }
     
     const startDate = new Date('<%= @medication.start_date.iso8601 %>');
     const endDate = <%= @medication.end_date ? "new Date('#{@medication.end_date.iso8601}')" : 'new Date()' %>;
     const today = new Date();
+    
+    console.log('Dates:', { startDate, endDate, today });
     
     // Generate daily data points
     const labels = [];
@@ -153,6 +167,8 @@
       data.push(1); // 1 indicates medication was active on this day
       currentDate.setDate(currentDate.getDate() + 1);
     }
+    
+    console.log('Chart data prepared:', { labels: labels.length, data: data.length });
     
     const ctx = canvas.getContext('2d');
     new Chart(ctx, {
@@ -216,5 +232,7 @@
         }
       }
     });
+    
+    console.log('Chart created successfully');
   });
 </script>
