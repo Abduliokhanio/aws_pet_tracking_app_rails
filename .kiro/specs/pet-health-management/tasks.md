@@ -64,8 +64,8 @@ This implementation plan breaks down the Pet Health Management System into incre
     - Verify all veterinary tables and relationships
     - _Requirements: 11.5_
 
-- [ ] 4. Implement HealthRecord model with validations
-  - [ ] 4.1 Create HealthRecord model
+- [x] 4. Implement HealthRecord model with validations
+  - [x] 4.1 Create HealthRecord model
     - Add belongs_to :pet association
     - Add belongs_to :medication, optional: true association
     - Add validations for recorded_on (presence), weight (numericality, allow_nil), status (inclusion)
