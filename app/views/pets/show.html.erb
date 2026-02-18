@@ -3,13 +3,21 @@
 <div class="show-container">
   <%= render @pet %>
 
-  <div class="health-management-section" style="margin: 2rem 0; padding: 1.5rem; background: #f8f9fa; border-radius: 8px;">
-    <h3 style="margin-bottom: 1rem;">🏥 Health Management</h3>
-    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-      <%= link_to "🏠 Health Dashboard", dashboard_user_pet_path(@user, @pet), class: "btn-primary", style: "background: #4caf50;" %>
-      <%= link_to "📊 Health Records", pet_health_records_path(@pet), class: "btn-primary" %>
-      <%= link_to "💊 Medications", pet_medications_path(@pet), class: "btn-primary" %>
-      <%= link_to "⏰ Reminders", pet_reminders_path(@pet), class: "btn-primary" %>
+  <div class="card" style="margin: 2rem 0;">
+    <h3 style="color: #00d4ff; text-shadow: 0 0 15px rgba(0, 212, 255, 0.4); margin-bottom: 1.5rem; text-align: center;">🏥 Health Management</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+      <%= link_to dashboard_user_pet_path(@user, @pet), class: "btn-card", style: "background: linear-gradient(135deg, #7b2cbf, #5a189a); border-color: #9d4edd; color: #e0e0e0; text-align: center; padding: 1rem;" do %>
+        🏠 Health Dashboard
+      <% end %>
+      <%= link_to pet_health_records_path(@pet), class: "btn-card", style: "text-align: center; padding: 1rem;" do %>
+        📊 Health Records
+      <% end %>
+      <%= link_to pet_medications_path(@pet), class: "btn-card", style: "text-align: center; padding: 1rem;" do %>
+        💊 Medications
+      <% end %>
+      <%= link_to pet_reminders_path(@pet), class: "btn-card", style: "text-align: center; padding: 1rem;" do %>
+        ⏰ Reminders
+      <% end %>
     </div>
   </div>
 
