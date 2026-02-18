@@ -10,14 +10,17 @@ class VisualizationService
                   .where(recorded_on: @start_date..@end_date)
                   .with_weight
                   .chronological
+                  .reverse
     
     {
-      labels: records.pluck(:recorded_on),
+      labels: records.map { |r| r.recorded_on.strftime('%b %d, %Y') },
       datasets: [{
         label: 'Weight (lbs)',
         data: records.pluck(:weight),
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1
+        borderColor: '#00d4ff',
+        backgroundColor: 'rgba(0, 212, 255, 0.1)',
+        tension: 0.4,
+        fill: true
       }]
     }
   end
