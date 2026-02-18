@@ -58,19 +58,56 @@ end
 
 puts "Creating medications..."
 medication_names = ["Amoxicillin", "Carprofen", "Fipronil", "Ivermectin", "Cetirizine", "Prednisone", "Metronidazole"]
+medications = []
 pets.each do |pet|
   # Create 1-3 medications per pet
   rand(1..3).times do
     days_ago = rand(1..30)
     start_date = days_ago.days.ago.to_date
-    Medication.create!(
+    initial_dose = rand(5.0..500.0).round(2)
+    
+    medication = Medication.create!(
       pet: pet,
       medication_name: medication_names.sample,
-      dose: rand(5.0..500.0).round(2), # Dosage in mg
+      dose: initial_dose, # Current/latest dosage
       start_date: start_date,
       end_date: [nil, (start_date + rand(7..30).days)].sample,
       notes: "Prescribed by veterinarian - #{['once daily', 'twice daily', 'three times daily', 'weekly'].sample}"
     )
+    medications << medication
+  end
+end
+
+puts "Creating medication dosage history..."
+medications.each do |medication|
+  # Create initial dosage record
+  MedicationDosage.create!(
+    medication: medication,
+    dose: medication.dose,
+    recorded_on: medication.start_date,
+    notes: "Initial dosage"
+  )
+  
+  # Randomly create 1-3 dosage changes for some medications
+  if rand < 0.5 # 50% chance of having dosage changes
+    changes = rand(1..3)
+    changes.times do |i|
+      days_after_start = rand(3..20)
+      change_date = medication.start_date + days_after_start.days
+      
+      # Only create if within medication period
+      if medication.end_date.nil? || change_date <= medication.end_date
+        new_dose = (medication.dose * rand(0.5..1.5)).round(2)
+        MedicationDosage.create!(
+          medication: medication,
+          dose: new_dose,
+          recorded_on: change_date,
+          notes: ["Dosage adjusted", "Increased dosage", "Decreased dosage", "Dosage modified per vet"].sample
+        )
+        # Update medication's current dose to the latest
+        medication.update(dose: new_dose)
+      end
+    end
   end
 end
 
@@ -165,6 +202,7 @@ puts "  - #{User.count} users"
 puts "  - #{Pet.count} pets"
 puts "  - #{HealthRecord.count} health records"
 puts "  - #{Medication.count} medications"
+puts "  - #{MedicationDosage.count} medication dosage records"
 puts "  - #{Reminder.count} reminders"
 puts "  - #{VetOffice.count} vet offices"
 puts "  - #{Veterinarian.count} veterinarians"

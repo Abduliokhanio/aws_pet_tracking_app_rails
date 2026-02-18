@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_18_223150) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_18_224031) do
   create_table "addresses", force: :cascade do |t|
     t.string "city", null: false
     t.string "country", null: false
@@ -62,6 +62,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_18_223150) do
     t.index ["pet_id", "recorded_on"], name: "index_health_records_on_pet_id_and_recorded_on"
     t.index ["pet_id"], name: "index_health_records_on_pet_id"
     t.index ["recorded_on"], name: "index_health_records_on_recorded_on"
+  end
+
+  create_table "medication_dosages", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.decimal "dose", precision: 10, scale: 2, null: false
+    t.integer "medication_id", null: false
+    t.text "notes"
+    t.date "recorded_on", null: false
+    t.datetime "updated_at", null: false
+    t.index ["medication_id", "recorded_on"], name: "index_medication_dosages_on_medication_id_and_recorded_on"
+    t.index ["medication_id"], name: "index_medication_dosages_on_medication_id"
   end
 
   create_table "medications", force: :cascade do |t|
@@ -154,6 +165,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_18_223150) do
   add_foreign_key "dismissed_alerts", "pets"
   add_foreign_key "health_records", "medications"
   add_foreign_key "health_records", "pets"
+  add_foreign_key "medication_dosages", "medications"
   add_foreign_key "medications", "pets"
   add_foreign_key "pet_health_thresholds", "pets"
   add_foreign_key "pets", "users"

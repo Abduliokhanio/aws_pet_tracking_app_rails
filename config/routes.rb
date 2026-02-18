@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       collection do
         get :export
       end
+      resources :medication_dosages, only: [:new, :create, :destroy]
     end
     resources :reminders do
       member do
