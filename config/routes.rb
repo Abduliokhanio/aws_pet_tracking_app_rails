@@ -3,6 +3,21 @@ Rails.application.routes.draw do
     resources :pets
   end
 
+  resources :pets, only: [] do
+    resources :health_records
+    resources :medications
+    resources :reminders do
+      member do
+        post :complete
+      end
+    end
+  end
+
+  resources :vet_offices
+  resources :veterinarians do
+    resources :ratings, only: [:create, :update]
+  end
+
   root "users#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

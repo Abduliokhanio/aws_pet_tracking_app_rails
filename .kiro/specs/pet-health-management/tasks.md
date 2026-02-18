@@ -237,7 +237,7 @@ This implementation plan breaks down the Pet Health Management System into incre
     - **Validates: Requirements 10.2**
 
 - [ ] 13. Implement HealthRecordsController
-  - [ ] 13.1 Create HealthRecordsController with CRUD actions
+  - [x] 13.1 Create HealthRecordsController with CRUD actions
     - Add before_action :set_pet
     - Add before_action :set_health_record for show, edit, update, destroy
     - Implement index action with pagination and visualization data
@@ -246,12 +246,12 @@ This implementation plan breaks down the Pet Health Management System into incre
     - Add private method: health_record_params
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5_
   
-  - [ ] 13.2 Add routes for health records
+  - [x] 13.2 Add routes for health records
     - Add nested routes under pets: resources :health_records
     - _Requirements: 1.1_
 
 - [ ] 14. Implement MedicationsController
-  - [ ] 14.1 Create MedicationsController with CRUD actions
+  - [x] 14.1 Create MedicationsController with CRUD actions
     - Add before_action :set_pet
     - Add before_action :set_medication for show, edit, update, destroy
     - Implement index action with active/inactive filtering
@@ -259,12 +259,12 @@ This implementation plan breaks down the Pet Health Management System into incre
     - Add private method: medication_params
     - _Requirements: 3.1, 3.2, 3.3_
   
-  - [ ] 14.2 Add routes for medications
+  - [x] 14.2 Add routes for medications
     - Add nested routes under pets: resources :medications
     - _Requirements: 3.1_
 
 - [ ] 15. Implement VetOfficesController
-  - [ ] 15.1 Create VetOfficesController with CRUD actions
+  - [x] 15.1 Create VetOfficesController with CRUD actions
     - Implement index action with location filtering
     - Implement show action displaying address, contacts, and veterinarians
     - Implement create action with nested attributes for address and contacts
@@ -272,35 +272,35 @@ This implementation plan breaks down the Pet Health Management System into incre
     - Add private method: vet_office_params (permit nested attributes)
     - _Requirements: 6.1, 6.2, 6.5_
   
-  - [ ] 15.2 Add routes for vet offices
+  - [x] 15.2 Add routes for vet offices
     - Add resources :vet_offices
     - _Requirements: 6.1_
 
 - [ ] 16. Implement VeterinariansController
-  - [ ] 16.1 Create VeterinariansController with CRUD actions
+  - [x] 16.1 Create VeterinariansController with CRUD actions
     - Implement index and show actions displaying ratings
     - Implement create, update, destroy actions
     - Add private method: veterinarian_params
     - _Requirements: 4.1, 4.2, 4.4_
   
-  - [ ] 16.2 Add routes for veterinarians
+  - [x] 16.2 Add routes for veterinarians
     - Add resources :veterinarians
     - _Requirements: 4.1_
 
 - [ ] 17. Implement RatingsController
-  - [ ] 17.1 Create RatingsController with create and update actions
+  - [x] 17.1 Create RatingsController with create and update actions
     - Add before_action :set_veterinarian
     - Implement create action with uniqueness handling
     - Implement update action for existing ratings
     - Add private method: rating_params
     - _Requirements: 5.1, 5.4, 5.5_
   
-  - [ ] 17.2 Add routes for ratings
+  - [x] 17.2 Add routes for ratings
     - Add nested routes under veterinarians: resources :ratings, only: [:create, :update]
     - _Requirements: 5.1_
 
 - [ ] 18. Implement RemindersController
-  - [ ] 18.1 Create RemindersController with CRUD actions
+  - [x] 18.1 Create RemindersController with CRUD actions
     - Add before_action :set_pet
     - Add before_action :set_reminder for show, edit, update, destroy
     - Implement index action with upcoming/due/completed filtering
@@ -309,7 +309,7 @@ This implementation plan breaks down the Pet Health Management System into incre
     - Add private method: reminder_params
     - _Requirements: 9.1, 9.3, 9.5_
   
-  - [ ] 18.2 Add routes for reminders
+  - [x] 18.2 Add routes for reminders
     - Add nested routes under pets: resources :reminders
     - Add member route: post :complete
     - _Requirements: 9.1_
