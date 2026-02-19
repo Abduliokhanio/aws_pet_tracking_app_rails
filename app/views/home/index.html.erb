@@ -1,0 +1,313 @@
+<style>
+  .landing-hero {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: linear-gradient(145deg, rgba(26, 26, 46, 0.6), rgba(22, 33, 62, 0.6));
+    border-radius: 20px;
+    margin-bottom: 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .landing-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+  }
+  
+  .hero-content {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .hero-title {
+    font-size: 3.5rem;
+    color: #00d4ff;
+    text-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+    margin-bottom: 1rem;
+    animation: fadeInDown 1s ease-out;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.5rem;
+    color: rgba(224, 224, 224, 0.9);
+    margin-bottom: 2rem;
+    animation: fadeInUp 1s ease-out 0.2s both;
+  }
+  
+  .hero-cta {
+    display: inline-flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeInUp 1s ease-out 0.4s both;
+  }
+  
+  .cta-button {
+    background: linear-gradient(135deg, #7b2cbf, #5a189a);
+    border: 2px solid #9d4edd;
+    color: #e0e0e0;
+    padding: 1.2rem 3rem;
+    border-radius: 50px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 6px 30px rgba(123, 44, 191, 0.5);
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+  
+  .cta-button:hover {
+    background: linear-gradient(135deg, #9d4edd, #7b2cbf);
+    border-color: #c77dff;
+    box-shadow: 0 8px 40px rgba(157, 78, 221, 0.7);
+    transform: translateY(-3px) scale(1.05);
+    color: #e0e0e0;
+  }
+  
+  .cta-button-secondary {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 150, 200, 0.2));
+    border: 2px solid #00d4ff;
+    color: #00d4ff;
+  }
+  
+  .cta-button-secondary:hover {
+    background: #00d4ff;
+    color: #0a0e27;
+    box-shadow: 0 8px 40px rgba(0, 212, 255, 0.6);
+  }
+  
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+  
+  .feature-card {
+    background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8));
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    border-radius: 20px;
+    padding: 2.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-10px);
+    border-color: rgba(0, 212, 255, 0.6);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 212, 255, 0.3);
+  }
+  
+  .feature-card:hover::before {
+    opacity: 1;
+  }
+  
+  .feature-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .feature-title {
+    font-size: 1.5rem;
+    color: #00d4ff;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .feature-description {
+    color: rgba(224, 224, 224, 0.8);
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .stats-section {
+    background: linear-gradient(145deg, rgba(26, 26, 46, 0.6), rgba(22, 33, 62, 0.6));
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  
+  .stat-item {
+    padding: 1.5rem;
+  }
+  
+  .stat-number {
+    font-size: 3rem;
+    color: #00d4ff;
+    font-weight: 700;
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  .stat-label {
+    color: rgba(224, 224, 224, 0.7);
+    font-size: 1.1rem;
+  }
+  
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+      font-size: 1.2rem;
+    }
+    
+    .cta-button {
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+    }
+    
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<div class="main-content">
+  <div class="landing-hero">
+    <div class="hero-content">
+      <h1 class="hero-title">🐾 Pet Health Tracker</h1>
+      <p class="hero-subtitle">Your companion's health journey, beautifully organized</p>
+      <div class="hero-cta">
+        <%= link_to "Get Started", users_path, class: "cta-button" %>
+        <%= link_to "View Pets", pets_path, class: "cta-button cta-button-secondary" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <span class="feature-icon">📊</span>
+      <h3 class="feature-title">Health Records</h3>
+      <p class="feature-description">Track weight, temperature, and vital signs with beautiful visualizations and trend analysis.</p>
+    </div>
+
+    <div class="feature-card">
+      <span class="feature-icon">💊</span>
+      <h3 class="feature-title">Medication Management</h3>
+      <p class="feature-description">Monitor dosages, track changes over time, and never miss a dose with timeline graphs.</p>
+    </div>
+
+    <div class="feature-card">
+      <span class="feature-icon">⏰</span>
+      <h3 class="feature-title">Smart Reminders</h3>
+      <p class="feature-description">Set up reminders for vet visits, medications, and important health checkups.</p>
+    </div>
+
+    <div class="feature-card">
+      <span class="feature-icon">🏥</span>
+      <h3 class="feature-title">Vet Network</h3>
+      <p class="feature-description">Manage veterinarian contacts, offices, and ratings all in one place.</p>
+    </div>
+
+    <div class="feature-card">
+      <span class="feature-icon">🚨</span>
+      <h3 class="feature-title">Health Alerts</h3>
+      <p class="feature-description">Get notified when health metrics fall outside normal ranges with customizable thresholds.</p>
+    </div>
+
+    <div class="feature-card">
+      <span class="feature-icon">📈</span>
+      <h3 class="feature-title">Data Export</h3>
+      <p class="feature-description">Export health records and medication history to CSV for vet visits or personal records.</p>
+    </div>
+  </div>
+
+  <% if User.any? || Pet.any? %>
+    <div class="stats-section">
+      <h2 style="color: #00d4ff; margin-bottom: 1rem;">Your Pet Care Dashboard</h2>
+      <p style="color: rgba(224, 224, 224, 0.7); margin-bottom: 2rem;">Track everything that matters for your furry friends</p>
+      
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-number"><%= User.count %></span>
+          <span class="stat-label">Pet Owners</span>
+        </div>
+        
+        <div class="stat-item">
+          <span class="stat-number"><%= Pet.count %></span>
+          <span class="stat-label">Pets Tracked</span>
+        </div>
+        
+        <div class="stat-item">
+          <span class="stat-number"><%= HealthRecord.count %></span>
+          <span class="stat-label">Health Records</span>
+        </div>
+        
+        <div class="stat-item">
+          <span class="stat-number"><%= Medication.count %></span>
+          <span class="stat-label">Medications</span>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div style="text-align: center; padding: 3rem 2rem; background: linear-gradient(145deg, rgba(26, 26, 46, 0.4), rgba(22, 33, 62, 0.4)); border-radius: 20px; border: 2px dashed rgba(0, 212, 255, 0.3);">
+    <h2 style="color: #00d4ff; margin-bottom: 1rem;">Ready to start tracking?</h2>
+    <p style="color: rgba(224, 224, 224, 0.7); margin-bottom: 2rem; font-size: 1.1rem;">Join pet owners who trust us with their companion's health</p>
+    <%= link_to "Create Your First Pet Profile", users_path, class: "cta-button" %>
+  </div>
+</div>
