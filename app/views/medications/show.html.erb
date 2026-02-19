@@ -250,6 +250,11 @@
         }
         
         console.log('Data points:', labels.length);
+        console.log('First 5 labels:', labels.slice(0, 5));
+        console.log('First 5 data values:', data.slice(0, 5));
+        console.log('Last 5 labels:', labels.slice(-5));
+        console.log('Last 5 data values:', data.slice(-5));
+        console.log('Min dose:', Math.min(...data), 'Max dose:', Math.max(...data));
         
         const ctx = canvas.getContext('2d');
         new Chart(ctx, {
