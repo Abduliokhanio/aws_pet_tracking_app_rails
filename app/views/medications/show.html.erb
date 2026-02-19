@@ -305,6 +305,8 @@
       document.addEventListener('turbo:load', initChart);
     })();
   </script>
+
+  <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
     <%= link_to edit_pet_medication_path(@pet, @medication), class: "med-action-btn med-edit-btn", style: "color: #00d4ff; text-decoration: none; padding: 1rem 2rem; border: 2px solid #00d4ff; border-radius: 25px; background: rgba(0, 212, 255, 0.1); font-weight: 600; transition: all 0.3s ease; cursor: pointer;" do %>
       ✏️ Edit
     <% end %>
@@ -313,6 +315,7 @@
     <% end %>
     <%= button_to "🗑️ Delete", [@pet, @medication], method: :delete, class: "med-delete-btn", style: "background: linear-gradient(135deg, #c9184a, #a4133c); border: 2px solid #ff4d6d; color: #e0e0e0; padding: 1rem 2rem; border-radius: 25px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;", form: { data: { turbo_confirm: "Are you sure you want to delete this medication?" } } %>
   </div>
+</div>
   
   <style>
     .med-action-btn:hover {
