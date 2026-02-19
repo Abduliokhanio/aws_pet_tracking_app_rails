@@ -197,9 +197,26 @@
           return;
         }
         
+        // If medication is ongoing (no end_date), add current date with latest dosage
+        const medicationEndDate = <%= @medication.end_date ? "new Date('#{@medication.end_date.iso8601}')" : 'null' %>;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Normalize to start of day
+        
+        // Get the last dosage entry
+        const lastDosage = dosageHistory[dosageHistory.length - 1];
+        const lastDate = new Date(lastDosage.date + 'T00:00:00');
+        
+        // Add today's point if medication is ongoing (no end_date)
+        if (!medicationEndDate && lastDate < today) {
+          dosageHistory.push({
+            date: today.toISOString().split('T')[0],
+            dose: lastDosage.dose
+          });
+        }
+        
         // Extract labels and data from dosage history
         const labels = dosageHistory.map(d => {
-          const date = new Date(d.date);
+          const date = new Date(d.date + 'T00:00:00');
           return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
         });
         const data = dosageHistory.map(d => d.dose);
@@ -306,127 +323,9 @@
     })();
   </script>
 
-  <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
-    <%= link_to edit_pet_medication_path(@pet, @medication), class: "med-action-btn med-edit-btn", style: "color: #00d4ff; text-decoration: none; padding: 1rem 2rem; border: 2px solid #00d4ff; border-radius: 25px; background: rgba(0, 212, 255, 0.1); font-weight: 600; transition: all 0.3s ease; cursor: pointer;" do %>
-      ✏️ Edit
-    <% end %>
-    <%= link_to pet_medications_path(@pet), class: "med-action-btn med-back-btn", style: "color: #00d4ff; text-decoration: none; padding: 1rem 2rem; border: 2px solid #00d4ff; border-radius: 25px; background: rgba(0, 212, 255, 0.1); font-weight: 600; transition: all 0.3s ease; cursor: pointer;" do %>
-      📋 Back to Medications
-    <% end %>
-    <%= button_to "🗑️ Delete", [@pet, @medication], method: :delete, class: "med-delete-btn", style: "background: linear-gradient(135deg, #c9184a, #a4133c); border: 2px solid #ff4d6d; color: #e0e0e0; padding: 1rem 2rem; border-radius: 25px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;", form: { data: { turbo_confirm: "Are you sure you want to delete this medication?" } } %>
+  <div class="action-buttons">
+    <%= link_to "✏️ Edit", edit_pet_medication_path(@pet, @medication), class: "btn-edit" %>
+    <%= link_to "📋 Back to Medications", pet_medications_path(@pet), class: "btn-back" %>
+    <%= button_to "🗑️ Delete", [@pet, @medication], method: :delete, class: "btn-delete", form: { data: { turbo_confirm: "Are you sure you want to delete this medication?" } } %>
   </div>
 </div>
-  
-  <style>
-    .med-action-btn:hover {
-      background: #00d4ff !important;
-      color: #0a0e27 !important;
-    }
-    .med-delete-btn:hover {
-      background: linear-gradient(135deg, #ff4d6d, #c9184a) !important;
-    }
-  </style>
-</div>
-
-<script>
-  document.addEventListener('turbo:load', () => {
-    console.log('Medication timeline script loading, Chart available:', typeof Chart !== 'undefined');
-    
-    const canvas = document.getElementById('medicationUsageChart');
-    if (!canvas) {
-      console.log('Canvas not found');
-      return;
-    }
-    
-    console.log('Canvas found, checking Chart...');
-    
-    if (typeof Chart === 'undefined') {
-      console.error('Chart.js is not loaded!');
-      return;
-    }
-    
-    const startDate = new Date('<%= @medication.start_date.iso8601 %>');
-    const endDate = <%= @medication.end_date ? "new Date('#{@medication.end_date.iso8601}')" : 'new Date()' %>;
-    const today = new Date();
-    
-    console.log('Dates:', { startDate, endDate, today });
-    
-    // Generate daily data points
-    const labels = [];
-    const data = [];
-    let currentDate = new Date(startDate);
-    
-    while (currentDate <= endDate && currentDate <= today) {
-      labels.push(currentDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
-      data.push(1); // 1 indicates medication was active on this day
-      currentDate.setDate(currentDate.getDate() + 1);
-    }
-    
-    console.log('Chart data prepared:', { labels: labels.length, data: data.length });
-    
-    const ctx = canvas.getContext('2d');
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Medication Active',
-          data: data,
-          borderColor: '#00d4ff',
-          backgroundColor: 'rgba(0, 212, 255, 0.2)',
-          fill: true,
-          stepped: true,
-          pointRadius: 0,
-          borderWidth: 3
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false
-          },
-          title: {
-            display: true,
-            text: 'Medication Usage Timeline',
-            color: '#00d4ff',
-            font: { size: 16 }
-          },
-          tooltip: {
-            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-            titleColor: '#00d4ff',
-            bodyColor: '#e0e0e0',
-            borderColor: '#00d4ff',
-            borderWidth: 1,
-            callbacks: {
-              label: function(context) {
-                return 'Medication Active';
-              }
-            }
-          }
-        },
-        scales: {
-          y: {
-            display: false,
-            min: 0,
-            max: 1.5
-          },
-          x: {
-            ticks: {
-              color: '#e0e0e0',
-              maxRotation: 45,
-              minRotation: 45,
-              maxTicksLimit: 10
-            },
-            grid: {
-              color: 'rgba(0, 212, 255, 0.1)'
-            }
-          }
-        }
-      }
-    });
-    
-    console.log('Chart created successfully');
-  });
-</script>
