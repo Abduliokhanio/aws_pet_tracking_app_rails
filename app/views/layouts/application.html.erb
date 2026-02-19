@@ -30,10 +30,10 @@
   <body>
     <nav class="space-nav">
       <div class="nav-container">
-        <div class="nav-brand">
+        <%= link_to root_path, class: "nav-brand", style: "text-decoration: none;" do %>
           <span class="nav-icon">🚀</span>
           <span class="nav-title">Pet Tracker</span>
-        </div>
+        <% end %>
         <div class="nav-links">
           <%= link_to "Users", users_path, class: "nav-link" %>
           <%= link_to "Vet Offices", vet_offices_path, class: "nav-link" %>
