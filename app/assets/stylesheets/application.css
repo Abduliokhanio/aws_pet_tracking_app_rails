@@ -572,6 +572,26 @@ button:hover, input[type="submit"][value*="Destroy"]:hover {
   transform: translateY(-2px);
 }
 
+/* Fix button_to form wrapper styling */
+.action-buttons form,
+div[style*="display: flex"] form,
+div[style*="display: grid"] form {
+  all: unset;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
+.action-buttons form button,
+div[style*="display: flex"] form button,
+div[style*="display: grid"] form button {
+  width: auto;
+  display: inline-block;
+}
+
 /* Horizontal rule */
 hr {
   border: none;
