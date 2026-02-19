@@ -145,8 +145,8 @@
               <% end %>
             </div>
             <div style="display: flex; gap: 0.5rem;">
-              <%= link_to "✏️", edit_pet_medication_medication_dosage_path(@pet, @medication, dosage), style: "background: rgba(0, 212, 255, 0.2); border: 1px solid #00d4ff; color: #00d4ff; padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none; font-size: 1.2rem; transition: all 0.3s ease;", onmouseover: "this.style.background='rgba(0, 212, 255, 0.4)';", onmouseout: "this.style.background='rgba(0, 212, 255, 0.2)';" %>
-              <%= button_to "🗑️", pet_medication_medication_dosage_path(@pet, @medication, dosage), method: :delete, style: "background: rgba(255, 77, 109, 0.2); border: 1px solid #ff4d6d; color: #ff4d6d; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-size: 1.2rem; transition: all 0.3s ease;", onmouseover: "this.style.background='rgba(255, 77, 109, 0.4)';", onmouseout: "this.style.background='rgba(255, 77, 109, 0.2)';", form: { data: { turbo_confirm: "Delete this dosage record?" } } %>
+              <%= link_to "✏️", edit_pet_medication_medication_dosage_path(@pet, @medication, dosage), class: "dosage-edit-btn", style: "background: rgba(0, 212, 255, 0.2); border: 1px solid #00d4ff; color: #00d4ff; padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none; font-size: 1.2rem; transition: all 0.3s ease;" %>
+              <%= button_to "🗑️", pet_medication_medication_dosage_path(@pet, @medication, dosage), method: :delete, class: "dosage-delete-btn", style: "background: rgba(255, 77, 109, 0.2); border: 1px solid #ff4d6d; color: #ff4d6d; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-size: 1.2rem; transition: all 0.3s ease;", form: { data: { turbo_confirm: "Delete this dosage record?" } } %>
             </div>
           </div>
         <% end %>
@@ -159,102 +159,50 @@
     <% end %>
     
     <div style="margin-top: 1.5rem; text-align: center;">
-      <%= link_to new_pet_medication_medication_dosage_path(@pet, @medication), style: "display: inline-block; color: #00d4ff; text-decoration: none; padding: 1rem 2rem; border: 2px solid #00d4ff; border-radius: 15px; background: rgba(0, 212, 255, 0.1); font-weight: 600; transition: all 0.3s ease;", onmouseover: "this.style.background='#00d4ff'; this.style.color='#0a0e27';", onmouseout: "this.style.background='rgba(0, 212, 255, 0.1)'; this.style.color='#00d4ff';" do %>
+      <%= link_to new_pet_medication_medication_dosage_path(@pet, @medication), style: "display: inline-block; color: #00d4ff; text-decoration: none; padding: 1rem 2rem; border: 2px solid #00d4ff; border-radius: 15px; background: rgba(0, 212, 255, 0.1); font-weight: 600; transition: all 0.3s ease;", class: "dosage-add-btn" do %>
         ➕ Add Dosage Change
       <% end %>
     </div>
+    
+    <style>
+      .dosage-add-btn:hover {
+        background: #00d4ff !important;
+        color: #0a0e27 !important;
+      }
+      .dosage-edit-btn:hover {
+        background: rgba(0, 212, 255, 0.4) !important;
+      }
+      .dosage-delete-btn:hover {
+        background: rgba(255, 77, 109, 0.4) !important;
+      }
+    </style>
   </div>
 
   <script>
-    // Use DOMContentLoaded instead of turbo:load for more reliable execution
     (function() {
       function initChart() {
-        console.log('Init chart function called');
-        console.log('Chart available:', typeof Chart);
-        
         const canvas = document.getElementById('medicationUsageChart');
-        if (!canvas) {
-          console.log('Canvas not found');
-          return;
-        }
+        if (!canvas) return;
         
-        console.log('Canvas found');
-        
-        // Wait for Chart.js to be available
         if (typeof Chart === 'undefined') {
-          console.log('Chart not ready, waiting...');
           setTimeout(initChart, 100);
           return;
         }
         
-        console.log('Chart.js is ready, creating chart');
-        console.log('Start date:', '<%= @medication.start_date.iso8601 %>');
-        console.log('End date:', <%= @medication.end_date ? "'#{@medication.end_date.iso8601}'" : "'today'" %>);
+        // Get dosage history - just the change points
+        const dosageHistory = <%= raw @medication.medication_dosages.ordered.map { |d| { date: d.recorded_on.strftime('%Y-%m-%d'), dose: d.dose.to_f } }.to_json %>;
         
-        const startDate = new Date('<%= @medication.start_date.iso8601 %>');
-        const endDate = <%= @medication.end_date ? "new Date('#{@medication.end_date.iso8601}')" : 'new Date()' %>;
-        
-        console.log('Parsed start date:', startDate);
-        console.log('Parsed end date:', endDate);
-        
-        // Get dosage history from the backend
-        const dosageHistory = <%= raw @medication.medication_dosages.ordered.map { |d| { date: d.recorded_on.iso8601, dose: d.dose.to_f } }.to_json %>;
-        
-        console.log('Dosage history:', dosageHistory);
-        console.log('Number of dosage records:', dosageHistory.length);
-        
-        // If no dosage history, use the medication's current dose
         if (dosageHistory.length === 0) {
-          dosageHistory.push({
-            date: '<%= @medication.start_date.iso8601 %>',
-            dose: <%= @medication.dose %>
-          });
+          canvas.parentElement.innerHTML = '<p style="text-align: center; color: rgba(224, 224, 224, 0.5);">No dosage data available</p>';
+          return;
         }
         
-        // Generate data points with dosage changes
-        const labels = [];
-        const data = [];
-        let currentDate = new Date(startDate);
-        let dosageIndex = 0;
-        
-        // Find the initial dosage (the one at or before start date)
-        let currentDose = dosageHistory[0].dose;
-        for (let i = 0; i < dosageHistory.length; i++) {
-          const dosageDate = new Date(dosageHistory[i].date);
-          if (dosageDate <= startDate) {
-            currentDose = dosageHistory[i].dose;
-            dosageIndex = i + 1;
-          } else {
-            break;
-          }
-        }
-        
-        console.log('Starting dose:', currentDose, 'at index:', dosageIndex);
-        
-        while (currentDate <= endDate) {
-          const dateStr = currentDate.toISOString().split('T')[0];
-          
-          // Check if there's a dosage change on this date
-          if (dosageIndex < dosageHistory.length) {
-            const nextDosageDate = dosageHistory[dosageIndex].date;
-            if (nextDosageDate === dateStr) {
-              currentDose = dosageHistory[dosageIndex].dose;
-              console.log('Dosage changed to', currentDose, 'on', dateStr);
-              dosageIndex++;
-            }
-          }
-          
-          labels.push(currentDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }));
-          data.push(currentDose);
-          currentDate.setDate(currentDate.getDate() + 1);
-        }
-        
-        console.log('Data points:', labels.length);
-        console.log('First 5 labels:', labels.slice(0, 5));
-        console.log('First 5 data values:', data.slice(0, 5));
-        console.log('Last 5 labels:', labels.slice(-5));
-        console.log('Last 5 data values:', data.slice(-5));
-        console.log('Min dose:', Math.min(...data), 'Max dose:', Math.max(...data));
+        // Extract labels and data from dosage history
+        const labels = dosageHistory.map(d => {
+          const date = new Date(d.date);
+          return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        });
+        const data = dosageHistory.map(d => d.dose);
         
         const ctx = canvas.getContext('2d');
         new Chart(ctx, {
@@ -262,14 +210,17 @@
           data: {
             labels: labels,
             datasets: [{
-              label: 'Daily Dosage (mg)',
+              label: 'Dosage (mg)',
               data: data,
               borderColor: '#00d4ff',
               backgroundColor: 'rgba(0, 212, 255, 0.2)',
               fill: true,
-              tension: 0.4,
-              pointRadius: 3,
-              pointHoverRadius: 6,
+              tension: 0.1,
+              pointRadius: 6,
+              pointHoverRadius: 8,
+              pointBackgroundColor: '#00d4ff',
+              pointBorderColor: '#fff',
+              pointBorderWidth: 2,
               borderWidth: 3
             }]
           },
@@ -277,22 +228,23 @@
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-              legend: { 
+              legend: {
                 display: true,
-                labels: { color: '#00d4ff' }
+                labels: { color: '#00d4ff', font: { size: 14 } }
               },
               title: {
                 display: true,
                 text: 'Medication Dosage Over Time',
                 color: '#00d4ff',
-                font: { size: 16 }
+                font: { size: 18, weight: 'bold' }
               },
               tooltip: {
                 backgroundColor: 'rgba(0, 0, 0, 0.8)',
                 titleColor: '#00d4ff',
                 bodyColor: '#e0e0e0',
                 borderColor: '#00d4ff',
-                borderWidth: 1,
+                borderWidth: 2,
+                padding: 12,
                 callbacks: {
                   label: function(context) {
                     return 'Dosage: ' + context.parsed.y + ' mg';
@@ -306,42 +258,44 @@
                 title: {
                   display: true,
                   text: 'Dosage (mg)',
-                  color: '#00d4ff'
+                  color: '#00d4ff',
+                  font: { size: 14, weight: 'bold' }
                 },
                 ticks: {
                   color: '#e0e0e0',
+                  font: { size: 12 },
                   callback: function(value) {
                     return value + ' mg';
                   }
                 },
                 grid: {
-                  color: 'rgba(0, 212, 255, 0.1)'
+                  color: 'rgba(0, 212, 255, 0.1)',
+                  lineWidth: 1
                 }
               },
               x: {
                 title: {
                   display: true,
                   text: 'Date',
-                  color: '#00d4ff'
+                  color: '#00d4ff',
+                  font: { size: 14, weight: 'bold' }
                 },
                 ticks: {
                   color: '#e0e0e0',
+                  font: { size: 11 },
                   maxRotation: 45,
-                  minRotation: 45,
-                  maxTicksLimit: 10
+                  minRotation: 45
                 },
                 grid: {
-                  color: 'rgba(0, 212, 255, 0.1)'
+                  color: 'rgba(0, 212, 255, 0.1)',
+                  lineWidth: 1
                 }
               }
             }
           }
         });
-        
-        console.log('Chart created!');
       }
       
-      // Try multiple event listeners
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initChart);
       } else {
@@ -349,17 +303,26 @@
       }
       
       document.addEventListener('turbo:load', initChart);
-      document.addEventListener('turbo:render', initChart);
     })();
   </script>
-    <%= link_to edit_pet_medication_path(@pet, @medication), style: "color: #00d4ff; text-decoration: none; padding: 1rem 2rem; border: 2px solid #00d4ff; border-radius: 25px; background: rgba(0, 212, 255, 0.1); font-weight: 600; transition: all 0.3s ease; cursor: pointer;", onmouseover: "this.style.background='#00d4ff'; this.style.color='#0a0e27';", onmouseout: "this.style.background='rgba(0, 212, 255, 0.1)'; this.style.color='#00d4ff';" do %>
+    <%= link_to edit_pet_medication_path(@pet, @medication), class: "med-action-btn med-edit-btn", style: "color: #00d4ff; text-decoration: none; padding: 1rem 2rem; border: 2px solid #00d4ff; border-radius: 25px; background: rgba(0, 212, 255, 0.1); font-weight: 600; transition: all 0.3s ease; cursor: pointer;" do %>
       ✏️ Edit
     <% end %>
-    <%= link_to pet_medications_path(@pet), style: "color: #00d4ff; text-decoration: none; padding: 1rem 2rem; border: 2px solid #00d4ff; border-radius: 25px; background: rgba(0, 212, 255, 0.1); font-weight: 600; transition: all 0.3s ease; cursor: pointer;", onmouseover: "this.style.background='#00d4ff'; this.style.color='#0a0e27';", onmouseout: "this.style.background='rgba(0, 212, 255, 0.1)'; this.style.color='#00d4ff';" do %>
+    <%= link_to pet_medications_path(@pet), class: "med-action-btn med-back-btn", style: "color: #00d4ff; text-decoration: none; padding: 1rem 2rem; border: 2px solid #00d4ff; border-radius: 25px; background: rgba(0, 212, 255, 0.1); font-weight: 600; transition: all 0.3s ease; cursor: pointer;" do %>
       📋 Back to Medications
     <% end %>
-    <%= button_to "🗑️ Delete", [@pet, @medication], method: :delete, style: "background: linear-gradient(135deg, #c9184a, #a4133c); border: 2px solid #ff4d6d; color: #e0e0e0; padding: 1rem 2rem; border-radius: 25px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;", onmouseover: "this.style.background='linear-gradient(135deg, #ff4d6d, #c9184a)';", onmouseout: "this.style.background='linear-gradient(135deg, #c9184a, #a4133c)';", form: { data: { turbo_confirm: "Are you sure you want to delete this medication?" } } %>
+    <%= button_to "🗑️ Delete", [@pet, @medication], method: :delete, class: "med-delete-btn", style: "background: linear-gradient(135deg, #c9184a, #a4133c); border: 2px solid #ff4d6d; color: #e0e0e0; padding: 1rem 2rem; border-radius: 25px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;", form: { data: { turbo_confirm: "Are you sure you want to delete this medication?" } } %>
   </div>
+  
+  <style>
+    .med-action-btn:hover {
+      background: #00d4ff !important;
+      color: #0a0e27 !important;
+    }
+    .med-delete-btn:hover {
+      background: linear-gradient(135deg, #ff4d6d, #c9184a) !important;
+    }
+  </style>
 </div>
 
 <script>
