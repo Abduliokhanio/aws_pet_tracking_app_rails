@@ -13,5 +13,20 @@ services:
       - .:/aws_pet_tracking_app
     env_file:
       - .env
+    depends_on:
+      - db
     stdin_open: true
     tty: true
+
+  db:
+    image: postgres:15
+    container_name: aws_pet_tracking_app_db
+    env_file:
+      - .env
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

@@ -4,13 +4,10 @@ FROM ruby:3.3.10
 
 WORKDIR /aws_pet_tracking_app
 
-# System/build deps (for native gems + JS tooling)
-# RUN apt-get update && apt-get install -y \
-#     build-essential \
-#     nodejs \
-#     npm \
-#   && rm -rf /var/lib/apt/lists/* \
-#   && npm install -g yarn
+# psql dependencies
+RUN apt-get update -qq && apt-get install -y \
+  build-essential \
+  libpq-dev
 
 # Ruby tooling
 RUN gem install bundler rails

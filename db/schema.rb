@@ -11,13 +11,16 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[8.1].define(version: 2026_02_18_224031) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
+
   create_table "addresses", force: :cascade do |t|
     t.string "city", null: false
     t.string "country", null: false
     t.datetime "created_at", null: false
     t.string "state", null: false
     t.datetime "updated_at", null: false
-    t.integer "vet_office_id", null: false
+    t.bigint "vet_office_id", null: false
     t.string "zipcode", null: false
     t.index ["vet_office_id"], name: "index_addresses_on_vet_office_id"
   end
@@ -28,7 +31,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_18_224031) do
     t.datetime "created_at", null: false
     t.boolean "is_primary", default: false
     t.datetime "updated_at", null: false
-    t.integer "vet_office_id", null: false
+    t.bigint "vet_office_id", null: false
     t.index ["vet_office_id", "contact_type", "is_primary"], name: "idx_on_vet_office_id_contact_type_is_primary_eec3e1dd41"
     t.index ["vet_office_id"], name: "index_contacts_on_vet_office_id"
   end
@@ -38,7 +41,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_18_224031) do
     t.string "alert_type", null: false
     t.datetime "created_at", null: false
     t.datetime "dismissed_at", null: false
-    t.integer "pet_id", null: false
+    t.bigint "pet_id", null: false
     t.datetime "updated_at", null: false
     t.index ["pet_id", "alert_type", "alert_condition"], name: "index_dismissed_alerts_on_pet_type_condition"
     t.index ["pet_id"], name: "index_dismissed_alerts_on_pet_id"
@@ -49,11 +52,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_18_224031) do
     t.datetime "created_at", null: false
     t.string "food_intake"
     t.string "medication_dose"
-    t.integer "medication_id"
+    t.bigint "medication_id"
     t.string "medication_name"
     t.string "mood"
     t.text "notes"
-    t.integer "pet_id", null: false
+    t.bigint "pet_id", null: false
     t.date "recorded_on", null: false
     t.string "status"
     t.datetime "updated_at", null: false
@@ -67,7 +70,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_18_224031) do
   create_table "medication_dosages", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.decimal "dose", precision: 10, scale: 2, null: false
-    t.integer "medication_id", null: false
+    t.bigint "medication_id", null: false
     t.text "notes"
     t.date "recorded_on", null: false
     t.datetime "updated_at", null: false
@@ -81,7 +84,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_18_224031) do
     t.date "end_date"
     t.string "medication_name", null: false
     t.text "notes"
-    t.integer "pet_id", null: false
+    t.bigint "pet_id", null: false
     t.date "start_date", null: false
     t.datetime "updated_at", null: false
     t.index ["pet_id", "start_date"], name: "index_medications_on_pet_id_and_start_date"
@@ -90,7 +93,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_18_224031) do
 
   create_table "pet_health_thresholds", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.integer "pet_id", null: false
+    t.bigint "pet_id", null: false
     t.string "threshold_type", null: false
     t.decimal "threshold_value", precision: 10, scale: 2, null: false
     t.datetime "updated_at", null: false
@@ -104,7 +107,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_18_224031) do
     t.string "name"
     t.string "species"
     t.datetime "updated_at", null: false
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_pets_on_user_id"
   end
 
@@ -113,8 +116,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_18_224031) do
     t.integer "rating_value", null: false
     t.text "review_text"
     t.datetime "updated_at", null: false
-    t.integer "user_id", null: false
-    t.integer "veterinarian_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "veterinarian_id", null: false
     t.index ["user_id", "veterinarian_id"], name: "index_ratings_on_user_id_and_veterinarian_id", unique: true
     t.index ["user_id"], name: "index_ratings_on_user_id"
     t.index ["veterinarian_id"], name: "index_ratings_on_veterinarian_id"
@@ -125,7 +128,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_18_224031) do
     t.datetime "completed_at"
     t.datetime "created_at", null: false
     t.text "description"
-    t.integer "pet_id", null: false
+    t.bigint "pet_id", null: false
     t.string "reminder_type", null: false
     t.date "scheduled_date", null: false
     t.string "status", default: "pending"
@@ -154,7 +157,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_18_224031) do
     t.datetime "created_at", null: false
     t.string "name", null: false
     t.datetime "updated_at", null: false
-    t.integer "vet_office_id", null: false
+    t.bigint "vet_office_id", null: false
     t.text "work_history"
     t.integer "years_of_experience"
     t.index ["vet_office_id"], name: "index_veterinarians_on_vet_office_id"
