@@ -24,4 +24,4 @@ production:
   username: <%= ENV["PG_USERNAME"] %>
   password: <%= ENV["PG_PASSWORD"] %>
   host:     <%= ENV["PG_HOST"] %>
-  port:     <%= ENV["PG_PORT"] || 5432 %>
+  port:     <%= ENV.fetch("PG_PORT", 5432) %>
