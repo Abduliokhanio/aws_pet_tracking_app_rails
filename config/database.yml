@@ -42,3 +42,11 @@ production:
     password: <%= ENV["PG_PASSWORD"] %>
     host:     <%= ENV["PG_HOST"] %>
     port:     <%= ENV.fetch("PG_PORT", 5432) %>
+  
+  cache:
+    <<: *default
+    database: <%= ENV["PG_DATABASE"] %>
+    username: <%= ENV["PG_USERNAME"] %>
+    password: <%= ENV["PG_PASSWORD"] %>
+    host:     <%= ENV["PG_HOST"] %>
+    port:     <%= ENV.fetch("PG_PORT", 5432) %>
