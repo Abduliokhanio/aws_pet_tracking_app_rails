@@ -18,13 +18,14 @@ test:
   database: aws_pet_tracking_app_test
 
 production:
-  <<: *default
-  database: <%= ENV["PG_DATABASE"] %>
-  # production credentials usually come from ENV as well
-  username: <%= ENV["PG_USERNAME"] %>
-  password: <%= ENV["PG_PASSWORD"] %>
-  host:     <%= ENV["PG_HOST"] %>
-  port:     <%= ENV.fetch("PG_PORT", 5432) %>
+  primary:
+    <<: *default
+    database: <%= ENV["PG_DATABASE"] %>
+    # production credentials usually come from ENV as well
+    username: <%= ENV["PG_USERNAME"] %>
+    password: <%= ENV["PG_PASSWORD"] %>
+    host:     <%= ENV["PG_HOST"] %>
+    port:     <%= ENV.fetch("PG_PORT", 5432) %>
 
   cable:
     <<: *default
